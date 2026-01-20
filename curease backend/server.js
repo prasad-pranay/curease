@@ -17,9 +17,14 @@ dotenv.config();
 // initializing the app
 const app = express();
 // initializing the port
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
+const PORT =  5000;
 // updating the cors, and other options ffor the app
-app.use(cors({ origin: "http://localhost:5173", credentials: true}), express.json(), cookieParser(),express.static("public"),express.static("recipts"));
+app.use(cors({ origin: true, credentials: true}), express.json(), cookieParser(),express.static("public"),express.static("recipts"));
+
+app.get("/",(req,res)=>{
+  res.json({"success":"The Curease Backend is running!"})
+})
 
 // all app paths here
 app.use("/doctor", DoctorRoutes);
