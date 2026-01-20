@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import { sendMailPatientWelcome } from "./utils/sendMail.js";
 // routes here
 import PatientRouter from "./routes/patientRoutes.js"
 import PharmacyRouter from "./routes/pharmacyRoutes.js"
