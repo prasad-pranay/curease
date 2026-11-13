@@ -1,6 +1,6 @@
 # Backend
 /curease backend/node_modules/
-/curease backend/__pycache__
+/curease backend/__pycache__/
 # remove recipts
 /curease backend/recipts/*
 !/curease backend/recipts/.gitkeep
@@ -26,3 +26,5 @@
 # General
 .DS_Store
 *.log
+
+**/desktop.ini
