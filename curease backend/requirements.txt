@@ -1,0 +1,5 @@
+scikit-learn
+google-generativeai
+transformers
+pillow
+torch

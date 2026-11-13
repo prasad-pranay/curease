@@ -1,0 +1,28 @@
+# Backend
+/curease backend/node_modules/
+/curease backend/__pycache__
+# remove recipts
+/curease backend/recipts/*
+!/curease backend/recipts/.gitkeep
+# remove for public folders
+/curease backend/public/DoctorProfileImage/*
+!/curease backend/public/DoctorProfileImage/.gitkeep
+/curease backend/public/imgtotext/*
+!/curease backend/public/imgtotext/.gitkeep
+/curease backend/public/PatientProfileImage/*
+!/curease backend/public/PatientProfileImage/.gitkeep
+/curease backend/foodAnalyze/*
+!/curease backend/foodAnalyze/.gitkeep
+
+/curease backend/addcolRought.py
+/curease backend/roughTemporary.js
+/curease backend/.env
+
+# Frontend
+/CurEase frontend/node_modules/
+/CurEase frontend/.env
+/CurEase frontend/dist/
+
+# General
+.DS_Store
+*.log

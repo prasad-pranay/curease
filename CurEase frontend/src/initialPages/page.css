@@ -1,0 +1,150 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  color: #fff;
+  background: #2457d6;
+}
+
+.nav-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-underline::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  content: "";
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 280ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.nav-underline:hover::after {
+  transform: scaleX(1);
+}
+
+.primary-link,
+.secondary-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 250ms ease, background-color 250ms ease, transform 250ms ease;
+}
+
+.primary-link {
+  min-height: 48px;
+  padding: 0 19px;
+  color: #fff;
+  background: #1748b5;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.primary-link:hover {
+  background: #103b9c;
+  transform: translateY(-2px);
+}
+
+.primary-link:active,
+.secondary-link:active {
+  transform: translateY(1px);
+}
+
+.secondary-link {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.secondary-link:hover {
+  color: #1748b5;
+}
+
+.hero-visual {
+  transform-origin: center;
+}
+
+.hero-image {
+  transition: transform 900ms cubic-bezier(.22, 1, .36, 1), filter 700ms ease;
+}
+
+.hero-visual:hover .hero-image {
+  transform: scale(1.025);
+}
+
+.feature-row {
+  transition: background-color 350ms ease, padding-left 350ms cubic-bezier(.22, 1, .36, 1), padding-right 350ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.feature-row:hover {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.reason-row {
+  transition: padding-left 350ms cubic-bezier(.22, 1, .36, 1), background-color 350ms ease;
+}
+
+.reason-row:hover {
+  padding-left: 9px;
+}
+
+.testimonial-item {
+  transition: background-color 350ms ease, padding-top 350ms ease;
+}
+
+.testimonial-item:hover {
+  background: rgba(248, 250, 252, .7);
+}
+
+.plan-column {
+  transition: background-color 350ms ease, padding-top 350ms ease;
+}
+
+.plan-column:hover {
+  background: rgba(255, 255, 255, .72);
+}
+
+.footer-link {
+  color: #475569;
+  transition: color 220ms ease, transform 220ms ease;
+}
+
+.footer-link:hover {
+  color: #1748b5;
+  transform: translateX(3px);
+}
+
+.animate-gentle-down {
+  animation: gentle-down 2s ease-in-out infinite;
+}
+
+@keyframes gentle-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
