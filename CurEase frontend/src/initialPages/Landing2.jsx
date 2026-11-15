@@ -142,16 +142,16 @@ function HeroSection() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden px-6 pb-24 pt-20 md:px-16 md:pb-36">
+    <section className="relative overflow-hidden px-6 pb-24 pt-36 sm:pt-20 md:px-16 md:pb-36">
       <div className="mx-auto grid max-w-[1280px] items-center gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:gap-16">
         <div className="relative z-10">
           <motion.p
             initial={reduceMotion ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.08, ease }}
-            className="mb-7 text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-700"
+            className="mb-7 text-[11px] font-semibold uppercase tracking-[0.15em] text-blue-700"
           >
-            A more mindful way to live well.
+            A life in balance.
           </motion.p>
           <motion.h1
             initial={reduceMotion ? false : { opacity: 0, y: 28 }}
@@ -193,10 +193,10 @@ function HeroSection() {
           <div className="relative overflow-hidden ">
             <img src="/healthcare.png" alt="Illustration representing the CurEase healthcare experience" className="hero-image h-auto w-full object-contain" loading="eager" />
           </div>
-          <div className="mt-5 flex items-center justify-between border-t border-slate-200 pt-4 text-[11px] uppercase tracking-[0.14em] text-slate-400">
+          {/* <div className="mt-5 flex items-center justify-between border-t border-slate-200 pt-4 text-[11px] uppercase tracking-[0.14em] text-slate-400">
             <span>Beyond Wellness</span>
             <span>01 / CurEase</span>
-          </div>
+          </div> */}
         </motion.div>
       </div>
       <a href="#features" className="mx-auto mt-20 flex w-fit items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-slate-400 transition-colors hover:text-slate-900">

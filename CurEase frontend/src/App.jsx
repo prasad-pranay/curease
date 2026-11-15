@@ -184,7 +184,7 @@ function App() {
             </GoogleOAuthProvider>} />
       </>}
 
-      {login == -2 && <Route path="*" element={<Splash CheckLogin={CheckLogin} />}/>
+      {login == -2 && <Route path="*" element={<Splash setLogin={setLogin} CheckLogin={CheckLogin} />}/>
       }
       
       <Route path="/about" element={<AboutPage/>} />

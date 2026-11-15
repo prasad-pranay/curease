@@ -15,7 +15,7 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 
 
-const Splash = ({ CheckLogin }) => {
+const Splash = ({ setLogin, CheckLogin }) => {
   const [noServerPage, setNoServerPage] = useState(false);
   const [retrying, setRetrying] = useState(false);
 
@@ -28,7 +28,8 @@ const Splash = ({ CheckLogin }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setNoServerPage(true);
+      setLogin(-1)
+      // setNoServerPage(true);
     }, shouldReduceMotion ? 800 : 4500);
 
     if (!shouldReduceMotion && wordmarkRef.current) {
@@ -293,9 +294,9 @@ const Splash = ({ CheckLogin }) => {
                   <p className="
                     mb-3 text-[11px] font-semibold
                     uppercase tracking-[0.2em]
-                    text-indigo-500
+                    text-[#1748B5]
                   ">
-                    Connection interrupted
+                    Backend Not Found
                   </p>
 
                   <h1 className="
@@ -315,8 +316,7 @@ const Splash = ({ CheckLogin }) => {
                     leading-7 text-slate-500
                   ">
                     CurEase is having trouble connecting
-                    to its server. This is usually temporary.
-                    Please try connecting again in a moment.
+                    to its server. This means no backend server is running.
                   </p>
                 </div>
 
@@ -371,7 +371,7 @@ const Splash = ({ CheckLogin }) => {
                   className="
                     group flex h-[52px] w-full
                     items-center justify-center gap-3
-                    rounded-lg bg-indigo-600
+                    rounded-lg bg-[#1748B5]
                     text-sm font-semibold text-white
                     transition-all duration-200
                     hover:bg-indigo-700
@@ -397,13 +397,42 @@ const Splash = ({ CheckLogin }) => {
                     />
                   )}
                 </button>
+                <button
+                  type="button"
+                  onClick={()=>setLogin(-1)}
+                  disabled={retrying}
+                  className="
+                    group flex h-[52px] w-full
+                    items-center justify-center gap-3
+                    rounded-lg border mt-10 border-[#1748B5]
+                    text-sm font-semibold text-[#1748B5]
+                    transition-all duration-200
+                    hover:bg-indigo-700
+                    active:scale-[0.99]
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
+                  "
+                >
 
-                <p className="
+                  View Landing Page
+
+                  {!retrying && (
+                    <ArrowRight
+                      size={16}
+                      className="
+                        transition-transform
+                        group-hover:translate-x-1
+                      "
+                    />
+                  )}
+                </button>
+
+                {/* <p className="
                   mt-4 text-center text-[11px]
                   leading-5 text-slate-400
                 ">
                   If the problem continues, please try again later.
-                </p>
+                </p> */}
               </motion.div>
             </div>
 

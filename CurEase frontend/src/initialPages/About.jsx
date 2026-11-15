@@ -836,7 +836,7 @@ function DeveloperSection() {
 
           <div className="relative aspect-square overflow-hidden bg-slate-100">
             <img
-              src="https://avatars.githubusercontent.com/u/148135405?v=4"
+              src="/me.png"
               alt="Developer portrait"
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"

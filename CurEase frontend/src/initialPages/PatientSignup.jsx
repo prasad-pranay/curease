@@ -18,18 +18,21 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
 
-
 const transition = {
   duration: 0.35,
   ease: [0.22, 1, 0.36, 1],
 };
 
 const steps = [
-  { number: 1, title: "Your details" },
-  { number: 2, title: "Contact" },
-  { number: 3, title: "Finish" },
+  { number: 1, title: "Personal" },
+  { number: 2, title: "Security" },
+  { number: 3, title: "Contact" },
+  { number: 4, title: "Review" },
 ];
 
+/* -------------------------------------------------------
+   Helpers
+------------------------------------------------------- */
 
 function checkPasswordConditions(password) {
   return {
@@ -40,75 +43,59 @@ function checkPasswordConditions(password) {
   };
 }
 
-
 /* -------------------------------------------------------
    Progress indicator
 ------------------------------------------------------- */
 
 const SignupProgress = ({ currentTab, setCurrentTab }) => {
   return (
-    <div className="mb-9">
-      <div className="flex items-center justify-between gap-2">
-        {steps.map((step, index) => {
+    <div className="mb-8">
+      {/* <div className="mb-3 flex items-center justify-between">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+          Registration
+        </span>
+
+        <span className="text-[11px] tabular-nums text-slate-400">
+          0{currentTab} <span className="text-slate-300">/ 04</span>
+        </span>
+      </div> */}
+
+      <div className="flex items-start gap-2">
+        {steps.map((step) => {
           const completed = currentTab > step.number;
           const active = currentTab === step.number;
 
           return (
-            <React.Fragment key={step.number}>
-              <button
-                type="button"
-                onClick={() => {
-                  if (completed) setCurrentTab(step.number);
-                }}
-                disabled={!completed}
-                className="group flex items-center gap-2.5 text-left disabled:cursor-default"
+            <button
+              key={step.number}
+              type="button"
+              disabled={!completed}
+              onClick={() => completed && setCurrentTab(step.number)}
+              className="group flex min-w-0 flex-1 flex-col gap-2 text-left disabled:cursor-default"
+            >
+              <div className="h-[3px] w-full overflow-hidden rounded-full bg-slate-200">
+                <motion.div
+                  initial={false}
+                  animate={{
+                    scaleX: active || completed ? 1 : 0,
+                  }}
+                  transition={transition}
+                  className="h-full origin-left bg-indigo-600"
+                />
+              </div>
+
+              <span
+                className={`truncate text-[10px] font-medium transition-colors sm:text-[11px] ${
+                  active
+                    ? "text-indigo-700"
+                    : completed
+                      ? "text-slate-600"
+                      : "text-slate-400"
+                }`}
               >
-                <span
-                  className={`
-                    flex h-8 w-8 shrink-0 items-center justify-center
-                    rounded-full border text-xs font-semibold
-                    transition-all duration-200
-                    ${
-                      active
-                        ? "border-indigo-600 bg-indigo-600 text-white"
-                        : completed
-                          ? "border-indigo-200 bg-indigo-50 text-indigo-600"
-                          : "border-slate-200 bg-white text-slate-400"
-                    }
-                  `}
-                >
-                  {completed ? <Check size={15} /> : step.number}
-                </span>
-
-                <span
-                  className={`
-                    hidden text-xs font-medium sm:block
-                    ${
-                      active
-                        ? "text-indigo-700"
-                        : completed
-                          ? "text-slate-600"
-                          : "text-slate-400"
-                    }
-                  `}
-                >
-                  {step.title}
-                </span>
-              </button>
-
-              {index !== steps.length - 1 && (
-                <div className="h-px flex-1 bg-slate-200">
-                  <motion.div
-                    initial={false}
-                    animate={{
-                      scaleX: currentTab > step.number ? 1 : 0,
-                    }}
-                    transition={transition}
-                    className="h-full origin-left bg-indigo-500"
-                  />
-                </div>
-              )}
-            </React.Fragment>
+                {step.title}
+              </span>
+            </button>
           );
         })}
       </div>
@@ -116,13 +103,11 @@ const SignupProgress = ({ currentTab, setCurrentTab }) => {
   );
 };
 
-
 /* -------------------------------------------------------
-   Reusable form field
+   Reusable input
 ------------------------------------------------------- */
 
 const SignupInput = ({
-  icon: Icon,
   label,
   value,
   onChange,
@@ -134,20 +119,11 @@ const SignupInput = ({
 }) => {
   return (
     <div className="w-full">
-      <label className="mb-2 block text-xs font-medium text-slate-600">
+      <label className="mb-1.5 block text-[11px] font-normal text-slate-500">
         {label}
       </label>
 
       <div className="relative">
-        <Icon
-          size={17}
-          strokeWidth={1.7}
-          className="
-            pointer-events-none absolute left-4 top-1/2
-            -translate-y-1/2 text-slate-400
-          "
-        />
-
         <input
           type={type}
           value={value}
@@ -155,16 +131,7 @@ const SignupInput = ({
           placeholder={placeholder}
           autoComplete={autoComplete}
           required={required}
-          className="
-            h-[50px] w-full rounded-lg
-            border border-slate-200 bg-white
-            pl-11 pr-12 text-sm text-slate-800
-            outline-none placeholder:text-slate-400
-            transition-all duration-200
-            hover:border-slate-300
-            focus:border-indigo-400
-            focus:ring-4 focus:ring-indigo-500/10
-          "
+          className="auth-line-input h-[43px] pr-10"
         />
 
         {rightElement}
@@ -172,7 +139,6 @@ const SignupInput = ({
     </div>
   );
 };
-
 
 /* -------------------------------------------------------
    Password requirements
@@ -185,30 +151,31 @@ const PasswordRequirements = ({ conditions }) => {
       valid: conditions.hasMinLength,
     },
     {
-      label: "At least one number or symbol",
+      label: "A number or symbol",
       valid: conditions.hasNumberOrSymbol,
     },
     {
-      label: "Uppercase and lowercase letters",
+      label: "Upper and lowercase letters",
       valid: conditions.hasUpperAndLower,
     },
   ];
 
   return (
-    <div className="mt-3 space-y-2">
+    <div className="mt-4 space-y-2">
       {requirements.map((item) => (
         <div
           key={item.label}
-          className={`
-            flex items-center gap-2 text-[11px]
-            transition-colors duration-200
-            ${item.valid ? "text-emerald-600" : "text-slate-400"}
-          `}
+          className={`flex items-center gap-2 text-[11px] transition-colors ${
+            item.valid ? "text-emerald-600" : "text-slate-400"
+          }`}
         >
           <CheckCircle2
             size={14}
-            className={item.valid ? "text-emerald-500" : "text-slate-300"}
+            className={
+              item.valid ? "text-emerald-500" : "text-slate-300"
+            }
           />
+
           {item.label}
         </div>
       ))}
@@ -216,22 +183,72 @@ const PasswordRequirements = ({ conditions }) => {
   );
 };
 
-
 /* -------------------------------------------------------
-   Step one: Basic details
+   Shared step heading
 ------------------------------------------------------- */
 
-const StepOne = ({
-  data,
-  setData,
-  onNext,
-  setWhichPage,
-}) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [previewImage, setPreviewImage] = useState(null);
+const StepHeading = ({ number, label, title, description }) => (
+  <div className="mb-7">
+    {/* <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-indigo-600">
+      0{number} — {label}
+    </p> */}
 
-  const passwordConditions = checkPasswordConditions(data.password);
+    <h2 className="text-[30px] font-light tracking-[-0.055em] text-slate-900 sm:text-5xl">
+      {title}
+    </h2>
+
+    {/* <p className="mt-1.5 text-[13px] leading-5 text-slate-500">
+      {description}
+    </p> */}
+  </div>
+);
+
+/* -------------------------------------------------------
+   Shared step actions
+------------------------------------------------------- */
+
+const StepActions = ({
+  onPrevious,
+  onNext,
+  previousLabel = "Previous",
+  nextLabel = "Continue",
+  submit = true,
+  loading = false,
+}) => {
+  return (
+    <div className="mt-auto flex flex-col-reverse items-center justify-between gap-4 border-t border-slate-200/80 pt-5 sm:flex-row">
+      <button
+        type="button"
+        onClick={onPrevious}
+        disabled={loading}
+        className="flex h-[44px] w-full items-center justify-center gap-2 rounded-md border border-slate-200 px-5 text-[12px] font-medium text-slate-600 transition-colors hover:bg-slate-100 disabled:opacity-50 sm:w-auto"
+      >
+        <ArrowLeft size={15} />
+        {previousLabel}
+      </button>
+
+      <button
+        type={submit ? "submit" : "button"}
+        onClick={!submit ? onNext : undefined}
+        disabled={loading}
+        className="flex h-[45px] w-full items-center justify-center gap-3 rounded-md bg-indigo-600 px-6 text-[12px] font-semibold text-white transition-all hover:bg-indigo-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+      >
+        {loading ? "Creating account..." : nextLabel}
+
+        {!loading && (
+          submit ? <ArrowRight size={15} /> : <Check size={15} />
+        )}
+      </button>
+    </div>
+  );
+};
+
+/* -------------------------------------------------------
+   Step 1 — Personal details
+------------------------------------------------------- */
+
+const StepOne = ({ data, setData, onNext, setWhichPage }) => {
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     if (!data.image) {
@@ -280,6 +297,180 @@ const StepOne = ({
       return;
     }
 
+    onNext();
+  };
+
+  return (
+    
+<motion.form
+  key="step-one"
+  onSubmit={handleSubmit}
+  initial={{ opacity: 0, x: 18 }}
+  animate={{ opacity: 1, x: 0 }}
+  exit={{ opacity: 0, x: -18 }}
+  transition={transition}
+  className="flex h-full min-h-0 flex-col"
+>
+  {/* Form content */}
+  <div className="flex-1 flex flex-col justify-center py-8">
+
+    <StepHeading
+      number={1}
+      label="Personal information"
+      title="Let's start with you."
+      description="Tell us a little about yourself."
+    />
+
+    <div className="mt-9 space-y-8">
+
+      {/* Profile photo */}
+      <div className="flex items-center gap-5 rounded-xl border border-slate-200/80 bg-slate-50/50 p-4 sm:p-5">
+
+        <div className="relative h-[76px] w-[76px] shrink-0">
+          <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white">
+            {previewImage ? (
+              <img
+                src={previewImage}
+                alt="Profile preview"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <UserRound
+                size={30}
+                strokeWidth={1.3}
+                className="text-slate-400"
+              />
+            )}
+          </div>
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-normal text-slate-800">
+              Profile photo
+            </p>
+            <span className="rounded-full bg-slate-200/70 px-2 py-0.5 text-[9px] font-normal uppercase tracking-wider text-slate-500">
+              Optional
+            </span>
+          </div>
+
+          <p className="mt-1 text-[11px] text-slate-400 font-light">
+            JPG, PNG or WEBP · Maximum 5 MB
+          </p>
+
+          <div className="mt-3 flex items-center gap-4">
+            <label
+              htmlFor="patient-signup-image"
+              className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-normal text-indigo-600 transition-colors hover:text-indigo-800"
+            >
+              <ImagePlus size={14} />
+              {previewImage ? "Change photo" : "Upload photo"}
+            </label>
+
+            {previewImage && (
+              <button
+                type="button"
+                onClick={() => updateField("image", null)}
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 transition-colors hover:text-red-500"
+              >
+                <Trash2 size={13} />
+                Remove
+              </button>
+            )}
+          </div>
+
+          <input
+            type="file"
+            id="patient-signup-image"
+            accept="image/jpeg,image/png,image/webp"
+            hidden
+            onChange={handleImageChange}
+          />
+        </div>
+      </div>
+
+      {/* Name fields */}
+      <div className="max-w-xl">
+        {/* <div className="mb-4">
+          <p className="text-xs font-semibold text-slate-700">
+            Your name
+          </p>
+          <p className="mt-1 text-[11px] text-slate-400">
+            Enter your name as it appears on your official documents.
+          </p>
+        </div> */}
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <SignupInput
+            label="First name"
+            placeholder="Your first name"
+            value={data.fName}
+            onChange={(e) => updateField("fName", e.target.value)}
+            autoComplete="given-name"
+          />
+
+          <SignupInput
+            label="Last name"
+            placeholder="Your last name"
+            value={data.lName}
+            onChange={(e) => updateField("lName", e.target.value)}
+            autoComplete="family-name"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Footer */}
+  <div className="mt-auto flex flex-col-reverse gap-4 border-t border-slate-200/80 pt-5 sm:flex-row sm:items-center sm:justify-between">
+
+    <p className="text-center text-[11px] text-slate-400 sm:text-left">
+      Already registered?{" "}
+      <button
+        type="button"
+        onClick={() => setWhichPage("login")}
+        className="ml-1 font-semibold text-indigo-600 transition-colors hover:text-indigo-800"
+      >
+        Sign in
+      </button>
+    </p>
+
+    <button
+      type="submit"
+      className="group flex h-[46px] w-full items-center justify-center gap-3 rounded-lg bg-indigo-600 px-7 text-xs font-semibold text-white shadow-sm shadow-indigo-600/10 transition-all duration-200 hover:bg-indigo-700 active:scale-[0.98] sm:w-auto"
+    >
+      Continue
+      <ArrowRight
+        size={15}
+        className="transition-transform duration-200 group-hover:translate-x-1"
+      />
+    </button>
+
+  </div>
+</motion.form>
+  );
+};
+
+/* -------------------------------------------------------
+   Step 2 — Security
+------------------------------------------------------- */
+
+const StepTwo = ({ data, setData, onNext, onPrevious }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const passwordConditions = checkPasswordConditions(data.password);
+
+  const updateField = (key, value) => {
+    setData((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     if (
       !passwordConditions.hasMinLength ||
       !passwordConditions.hasNumberOrSymbol ||
@@ -298,246 +489,149 @@ const StepOne = ({
   };
 
   return (
-    <motion.form
-      key="step-one"
-      onSubmit={handleSubmit}
-      initial={{ opacity: 0, x: 15 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -15 }}
-      transition={transition}
-      className="flex flex-col"
-    >
-      <div className="mb-7">
-        <p className="
-          mb-2 text-[10px] font-semibold uppercase
-          tracking-[0.2em] text-indigo-500
-        ">
-          Step 01 / Personal information
-        </p>
+    
+<motion.form
+  key="step-two"
+  onSubmit={handleSubmit}
+  initial={{ opacity: 0, x: 15 }}
+  animate={{ opacity: 1, x: 0 }}
+  exit={{ opacity: 0, x: -15 }}
+  transition={transition}
+  className="flex h-full min-h-0 flex-col"
+>
+  <StepHeading
+    number={2}
+    label="Account security"
+    title="Secure your account."
+    description="Choose a password to keep your account protected."
+  />
 
-        <h2 className="
-          text-3xl font-semibold tracking-tight text-slate-900
-        ">
-          Create your account
-        </h2>
+  <div className="flex-1 flex flex-col justify-center py-8">
 
-        <p className="mt-2 text-sm leading-6 text-slate-500">
-          Let's start with a few details about you.
-        </p>
-      </div>
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_0.65fr] lg:items-center">
 
-      {/* Profile image */}
+      {/* Password fields */}
+      <div className="space-y-6 max-w-md">
 
-      <div className="
-        mb-7 flex items-center gap-5
-        border-b border-slate-100 pb-7
-      ">
-        <div className="
-          relative flex h-[76px] w-[76px] shrink-0
-          items-center justify-center overflow-hidden
-          rounded-xl border border-slate-200
-          bg-slate-100
-        ">
-          {previewImage ? (
-            <img
-              src={previewImage}
-              alt="Profile preview"
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <UserRound size={32} strokeWidth={1.3} className="text-slate-400" />
+        <div>
+          <SignupInput
+            label="Password"
+            placeholder="Create a strong password"
+            type={showPassword ? "text" : "password"}
+            value={data.password}
+            onChange={(e) => updateField("password", e.target.value)}
+            autoComplete="new-password"
+            rightElement={
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                className="absolute right-1 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-slate-700"
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            }
+          />
+
+          <div className="mt-3">
+            <PasswordRequirements conditions={passwordConditions} />
+          </div>
+        </div>
+
+        <div>
+          <SignupInput
+            label="Confirm password"
+            placeholder="Enter your password again"
+            type={showConfirmPassword ? "text" : "password"}
+            value={data.repassword}
+            onChange={(e) => updateField("repassword", e.target.value)}
+            autoComplete="new-password"
+            rightElement={
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                aria-label={
+                  showConfirmPassword ? "Hide password" : "Show password"
+                }
+                className="absolute right-1 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-slate-700"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff size={16} />
+                ) : (
+                  <Eye size={16} />
+                )}
+              </button>
+            }
+          />
+
+          {data.repassword.length > 0 && (
+            <p
+              className={`mt-2 text-[11px] ${
+                data.password === data.repassword
+                  ? "text-emerald-600"
+                  : "text-red-500"
+              }`}
+            >
+              {data.password === data.repassword
+                ? "Passwords match"
+                : "Passwords do not match"}
+            </p>
           )}
         </div>
 
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-slate-800">
-            Profile photo
-            <span className="ml-2 text-[10px] font-normal text-slate-400">
-              Optional
-            </span>
-          </p>
-
-          <p className="mt-1 text-xs text-slate-400">
-            JPG, PNG or WEBP. Maximum 5 MB.
-          </p>
-
-          <div className="mt-3 flex items-center gap-3">
-            <label
-              htmlFor="patient-signup-image"
-              className="
-                inline-flex cursor-pointer items-center gap-1.5
-                text-xs font-semibold text-indigo-600
-                transition-colors hover:text-indigo-800
-              "
-            >
-              <ImagePlus size={15} />
-              {previewImage ? "Change photo" : "Upload photo"}
-            </label>
-
-            {previewImage && (
-              <button
-                type="button"
-                onClick={() => updateField("image", null)}
-                className="
-                  inline-flex items-center gap-1
-                  text-xs text-slate-400
-                  transition-colors hover:text-red-500
-                "
-              >
-                <Trash2 size={14} />
-                Remove
-              </button>
-            )}
-          </div>
-
-          <input
-            type="file"
-            id="patient-signup-image"
-            accept="image/*"
-            hidden
-            onChange={handleImageChange}
-          />
-        </div>
+        {/* <p className="flex items-center gap-2 border-t border-slate-200/70 pt-4 text-[11px] text-slate-400">
+          <ShieldCheck size={15} className="shrink-0 text-slate-500" />
+          Avoid using a password you already use elsewhere.
+        </p> */}
       </div>
 
-      {/* Name */}
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <SignupInput
-          icon={UserRound}
-          label="First name"
-          placeholder="Your first name"
-          value={data.fName}
-          onChange={(e) => updateField("fName", e.target.value)}
-          autoComplete="given-name"
-        />
-
-        <SignupInput
-          icon={UserRound}
-          label="Last name"
-          placeholder="Your last name"
-          value={data.lName}
-          onChange={(e) => updateField("lName", e.target.value)}
-          autoComplete="family-name"
-        />
-      </div>
-
-      {/* Password */}
-
-      <div className="mt-5">
-        <SignupInput
-          icon={ShieldCheck}
-          label="Password"
-          placeholder="Create a strong password"
-          type={showPassword ? "text" : "password"}
-          value={data.password}
-          onChange={(e) => updateField("password", e.target.value)}
-          autoComplete="new-password"
-          rightElement={
-            <button
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-              className="
-                absolute right-4 top-1/2 -translate-y-1/2
-                text-slate-400 hover:text-slate-700
-              "
-            >
-              {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-            </button>
-          }
-        />
-
-        <PasswordRequirements conditions={passwordConditions} />
-      </div>
-
-      {/* Confirm password */}
-
-      <div className="mt-5">
-        <SignupInput
-          icon={ShieldCheck}
-          label="Confirm password"
-          placeholder="Enter your password again"
-          type={showConfirmPassword ? "text" : "password"}
-          value={data.repassword}
-          onChange={(e) => updateField("repassword", e.target.value)}
-          autoComplete="new-password"
-          rightElement={
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              aria-label={
-                showConfirmPassword ? "Hide password" : "Show password"
-              }
-              className="
-                absolute right-4 top-1/2 -translate-y-1/2
-                text-slate-400 hover:text-slate-700
-              "
-            >
-              {showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-            </button>
-          }
-        />
-
-        {data.repassword.length > 0 && (
-          <p className={`
-            mt-2 text-[11px]
-            ${
-              data.password === data.repassword
-                ? "text-emerald-600"
-                : "text-red-500"
-            }
-          `}>
-            {data.password === data.repassword
-              ? "Passwords match"
-              : "Passwords do not match"}
-          </p>
-        )}
-      </div>
-
-      {/* Actions */}
-
-      <div className="
-        mt-8 flex flex-col-reverse items-center
-        justify-between gap-4 border-t border-slate-100
-        pt-6 sm:flex-row
-      ">
-        <p className="text-xs text-slate-400">
-          Already have an account?{" "}
-          <button
-            type="button"
-            onClick={() => setWhichPage("login")}
-            className="font-semibold text-indigo-600 hover:text-indigo-800"
-          >
-            Sign in
-          </button>
-        </p>
-
-        <button
-          type="submit"
-          className="
-            flex h-[48px] w-full items-center justify-center
-            gap-3 rounded-lg bg-indigo-600 px-6
-            text-sm font-semibold text-white
-            transition-all duration-200
-            hover:bg-indigo-700 active:scale-[0.99]
-            sm:w-auto
-          "
+      {/* Illustration */}
+      <div className="hidden lg:flex items-center justify-center">
+        <svg
+          viewBox="0 0 400 400"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full max-w-[250px] text-slate-400"
         >
-          Continue
-          <ArrowRight size={16} />
-        </button>
+          <g
+            stroke="currentColor"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M222 76c-11.012 30.84-50.373 52.31-75 56" />
+            <path d="M236 44.053C123.346 20.122 96.768 144.026 136.104 167" />
+            <path d="M256 54c46.745 21.405 32.975 54.654 16.736 90" />
+            <path d="M260.902 122C295.577 228.082 142 250.963 142 156.601" />
+            <path d="M218.892 153c.406-2.969-.432-5.246-.892-8m-27 9v-8" />
+            <path d="M60 345.501c0-35.979 23.375-121.176 103.582-117.253 22.343 1.093 27.658 123.587 42.48 117.253 25.938-11.085 17.384-91.27 37.509-121.343C340.019 219.027 341 340.572 341 359" />
+            <path d="M296 271c-7.635-17.335-28.897-40.591-49-43m-84 4c-23.73 14.396-34.034 35.837-43 60" />
+            <path d="M93.023 347.996c-2.57-17.957-1.338-40.864 16.052-51.331 48.894-29.428 42.643 66.213 19.063 49.318m164.932-74.944c28.821-1.254-9.289 28.353-2.163 1.999M304 324.289c-12.141-1.561-21.524 3.664-33 4.711" />
+          </g>
+        </svg>
       </div>
-    </motion.form>
+
+    </div>
+  </div>
+
+  {/* Navigation */}
+  <div className="mt-auto bordert border-slate-200/80 pt-5">
+    <StepActions
+      onPrevious={onPrevious}
+      nextLabel="Continue"
+    />
+  </div>
+
+</motion.form>
+
   );
 };
 
-
 /* -------------------------------------------------------
-   Step two: Contact details
+   Step 3 — Contact information
 ------------------------------------------------------- */
 
-const StepTwo = ({ data, setData, onNext, onPrevious }) => {
+const StepThree = ({ data, setData, onNext, onPrevious }) => {
   const [email, setEmail] = useState(data.email);
   const [phone, setPhone] = useState(data.phone);
 
@@ -559,59 +653,71 @@ const StepTwo = ({ data, setData, onNext, onPrevious }) => {
   };
 
   return (
-    <motion.form
-      key="step-two"
-      onSubmit={handleSubmit}
-      initial={{ opacity: 0, x: 15 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -15 }}
-      transition={transition}
-      className="flex flex-col"
-    >
-      <div className="mb-8">
-        <p className="
-          mb-2 text-[10px] font-semibold uppercase
-          tracking-[0.2em] text-indigo-500
-        ">
-          Step 02 / Contact information
+    
+<motion.form
+  key="step-three"
+  onSubmit={handleSubmit}
+  initial={{ opacity: 0, x: 15 }}
+  animate={{ opacity: 1, x: 0 }}
+  exit={{ opacity: 0, x: -15 }}
+  transition={transition}
+  className="flex h-full min-h-0 flex-col"
+>
+  <StepHeading
+    number={3}
+    label="Contact information"
+    title="Where can we reach you?"
+    description="Add your contact details for account-related updates."
+  />
+
+  {/* Main content */}
+  <div className="flex-1 flex items-center py-8">
+
+    <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-12">
+
+      {/* Profile reference */}
+      <div className="flex flex-col justify-center md:border-r md:border-slate-200/80 md:pr-10">
+
+        <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+          Your details
         </p>
 
-        <h2 className="
-          text-3xl font-semibold tracking-tight text-slate-900
-        ">
-          How can we reach you?
-        </h2>
-
-        <p className="mt-2 text-sm leading-6 text-slate-500">
-          These details help us keep you updated about your account.
-        </p>
-      </div>
-
-      <div className="
-        mb-7 border-y border-slate-100
-        py-6
-      ">
-        <div className="mb-6 flex items-center gap-4">
-          <div className="
-            flex h-12 w-12 items-center justify-center
-            rounded-xl bg-indigo-50 text-indigo-600
-          ">
-            <UserRound size={22} strokeWidth={1.5} />
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+            <UserRound size={19} strokeWidth={1.5} />
           </div>
 
-          <div>
-            <p className="text-sm font-semibold text-slate-800">
-              {data.fName} {data.lName}
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-slate-800">
+              {data.fName || data.lName
+                ? `${data.fName} ${data.lName}`.trim()
+                : "Your name"}
             </p>
-            <p className="mt-1 text-xs text-slate-400">
-              Your CurEase profile
+
+            <p className="mt-1 text-[11px] text-slate-400">
+              Patient profile
             </p>
           </div>
         </div>
 
-        <div className="space-y-5">
+        <p className="mt-7 max-w-[220px] text-[12px] leading-6 text-slate-400">
+          We'll use your contact details to share important updates about your account.
+        </p>
+      </div>
+
+      {/* Contact fields */}
+      <div className="flex flex-col justify-center">
+        <div className="mb-5">
+          <p className="text-xs font-semibold text-slate-700">
+            Contact details
+          </p>
+          <p className="mt-1 text-[11px] text-slate-400">
+            Make sure these details are correct.
+          </p>
+        </div>
+
+        <div className="space-y-6">
           <SignupInput
-            icon={Mail}
             label="Email address"
             placeholder="you@example.com"
             type="email"
@@ -621,7 +727,6 @@ const StepTwo = ({ data, setData, onNext, onPrevious }) => {
           />
 
           <SignupInput
-            icon={Phone}
             label="Phone number"
             placeholder="Enter your phone number"
             type="tel"
@@ -632,205 +737,175 @@ const StepTwo = ({ data, setData, onNext, onPrevious }) => {
         </div>
       </div>
 
-      <div className="
-        flex flex-col-reverse items-center
-        justify-between gap-4 pt-2 sm:flex-row
-      ">
-        <button
-          type="button"
-          onClick={onPrevious}
-          className="
-            flex h-[46px] w-full items-center
-            justify-center gap-2 rounded-lg
-            border border-slate-200 bg-white px-5
-            text-sm font-medium text-slate-600
-            transition-colors hover:bg-slate-50
-            sm:w-auto
-          "
-        >
-          <ArrowLeft size={16} />
-          Previous
-        </button>
+    </div>
+  </div>
 
-        <button
-          type="submit"
-          className="
-            flex h-[48px] w-full items-center
-            justify-center gap-3 rounded-lg
-            bg-indigo-600 px-6 text-sm font-semibold
-            text-white transition-all duration-200
-            hover:bg-indigo-700 active:scale-[0.99]
-            sm:w-auto
-          "
-        >
-          Review details
-          <ArrowRight size={16} />
-        </button>
-      </div>
-    </motion.form>
+  {/* Navigation */}
+  <div className="mt-auto pt-5">
+    <StepActions
+      onPrevious={onPrevious}
+      nextLabel="Review details"
+    />
+  </div>
+</motion.form>
+
   );
 };
 
-
 /* -------------------------------------------------------
-   Step three: Review and register
+   Step 4 — Review and register
 ------------------------------------------------------- */
 
-const StepThree = ({
+const StepFour = ({
   data,
   onPrevious,
   onRegister,
   loading,
 }) => {
+  const [previewImage, setPreviewImage] = useState(null);
+
+  useEffect(() => {
+    if (!data.image) {
+      setPreviewImage(null);
+      return;
+    }
+
+    const url = URL.createObjectURL(data.image);
+    setPreviewImage(url);
+
+    return () => URL.revokeObjectURL(url);
+  }, [data.image]);
+
   return (
-    <motion.div
-      key="step-three"
-      initial={{ opacity: 0, x: 15 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -15 }}
-      transition={transition}
-      className="flex flex-col"
-    >
-      <div className="mb-7">
-        <p className="
-          mb-2 text-[10px] font-semibold uppercase
-          tracking-[0.2em] text-indigo-500
-        ">
-          Step 03 / Final review
-        </p>
+   
+<motion.div
+  key="step-four"
+  initial={{ opacity: 0, x: 15 }}
+  animate={{ opacity: 1, x: 0 }}
+  exit={{ opacity: 0, x: -15 }}
+  transition={transition}
+  className="flex h-full min-h-0 flex-col"
+>
+  <StepHeading
+    number={4}
+    label="Final review"
+    title="Almost there."
+    description="Take a moment to check your information."
+  />
 
-        <h2 className="
-          text-3xl font-semibold tracking-tight text-slate-900
-        ">
-          Almost there.
-        </h2>
+  {/* Review content */}
+  <div className="flex-1 flex flex-col justify-center py-6">
 
-        <p className="mt-2 text-sm leading-6 text-slate-500">
-          Take a moment to review your information before creating your account.
-        </p>
+    {/* Patient identity */}
+    <div className="flex items-center gap-4 border-b border-slate-200/80 pb-6">
+      <div className="flex h-[64px] w-[64px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100">
+        {previewImage ? (
+          <img
+            src={previewImage}
+            alt="Profile"
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <UserRound
+            size={26}
+            strokeWidth={1.4}
+            className="text-slate-400"
+          />
+        )}
       </div>
 
-      <div className="
-        border-y border-slate-100 py-6
-      ">
-        <div className="mb-6 flex items-center gap-4">
-          <div className="
-            flex h-[68px] w-[68px] shrink-0
-            items-center justify-center overflow-hidden
-            rounded-xl border border-slate-200
-            bg-slate-100
-          ">
-            {data.image ? (
-              <img
-                src={URL.createObjectURL(data.image)}
-                alt="Profile"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <UserRound size={30} className="text-slate-400" />
-            )}
-          </div>
+      <div className="min-w-0">
+        <p className="text-base font-semibold tracking-tight text-slate-800">
+          {`${data.fName} ${data.lName}`.trim() || "Your name"}
+        </p>
 
-          <div>
-            <p className="text-lg font-semibold text-slate-800">
-              {data.fName} {data.lName}
-            </p>
-            <p className="mt-1 text-xs text-slate-400">
-              Patient account
-            </p>
-          </div>
+        <p className="mt-1 text-[11px] text-slate-400">
+          Patient account
+        </p>
+      </div>
+    </div>
+
+    {/* Contact information */}
+    <div className="grid grid-cols-1 gap-7 border-b border-slate-200/80 py-6 sm:grid-cols-2">
+
+      <div className="min-w-0">
+        <div className="mb-2 flex items-center gap-2 text-slate-400">
+          <Mail size={14} strokeWidth={1.7} />
+          <p className="text-[10px] font-medium uppercase tracking-wider">
+            Email address
+          </p>
         </div>
 
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <Mail size={17} className="text-slate-400" />
-            <div className="min-w-0">
-              <p className="text-[10px] uppercase tracking-wider text-slate-400">
-                Email
-              </p>
-              <p className="mt-0.5 break-all text-sm text-slate-700">
-                {data.email}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Phone size={17} className="text-slate-400" />
-            <div>
-              <p className="text-[10px] uppercase tracking-wider text-slate-400">
-                Phone
-              </p>
-              <p className="mt-0.5 text-sm text-slate-700">
-                {data.phone}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="
-        mt-6 flex items-start gap-3
-        rounded-lg bg-indigo-50/70 p-4
-      ">
-        <ShieldCheck
-          size={19}
-          className="mt-0.5 shrink-0 text-indigo-600"
-        />
-
-        <p className="text-xs leading-5 text-slate-600">
-          Your account information will be used to personalize
-          your CurEase experience. You can update your profile
-          details later.
+        <p className="break-all text-[13px] font-medium text-slate-700">
+          {data.email || "Not provided"}
         </p>
       </div>
 
-      <div className="
-        mt-8 flex flex-col-reverse items-center
-        justify-between gap-4 sm:flex-row
-      ">
-        <button
-          type="button"
-          onClick={onPrevious}
-          disabled={loading}
-          className="
-            flex h-[46px] w-full items-center
-            justify-center gap-2 rounded-lg
-            border border-slate-200 bg-white px-5
-            text-sm font-medium text-slate-600
-            transition-colors hover:bg-slate-50
-            disabled:opacity-50 sm:w-auto
-          "
-        >
-          <ArrowLeft size={16} />
-          Previous
-        </button>
+      <div className="min-w-0">
+        <div className="mb-2 flex items-center gap-2 text-slate-400">
+          <Phone size={14} strokeWidth={1.7} />
+          <p className="text-[10px] font-medium uppercase tracking-wider">
+            Phone number
+          </p>
+        </div>
 
-        <button
-          type="button"
-          onClick={onRegister}
-          disabled={loading}
-          className="
-            flex h-[48px] w-full items-center
-            justify-center gap-3 rounded-lg
-            bg-indigo-600 px-6 text-sm font-semibold
-            text-white transition-all duration-200
-            hover:bg-indigo-700 active:scale-[0.99]
-            disabled:cursor-not-allowed disabled:opacity-60
-            sm:w-auto
-          "
-        >
-          {loading ? "Creating account..." : "Create account"}
-          {!loading && <ArrowRight size={16} />}
-        </button>
+        <p className="text-[13px] font-medium text-slate-700">
+          {data.phone || "Not provided"}
+        </p>
       </div>
-    </motion.div>
+    </div>
+
+    {/* Confirmation note */}
+    <div className="flex items-start gap-3 pt-5">
+      <Check
+        size={16}
+        strokeWidth={1.8}
+        className="mt-0.5 shrink-0 text-emerald-600"
+      />
+
+      <p className="text-[11px] leading-5 text-slate-500">
+        Your details have been entered. Please review them before creating your account.
+      </p>
+    </div>
+
+  </div>
+
+  {/* Footer actions */}
+  <div className="mt-auto border-t border-slate-200/80 pt-5">
+    <div className="flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
+
+      <button
+        type="button"
+        onClick={onPrevious}
+        disabled={loading}
+        className="flex h-[44px] w-full items-center justify-center gap-2 rounded-md border border-slate-200 px-5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-50 sm:w-auto"
+      >
+        <ArrowLeft size={15} />
+        Previous
+      </button>
+
+      <button
+        type="button"
+        onClick={onRegister}
+        disabled={loading}
+        className="flex h-[45px] w-full items-center justify-center gap-3 rounded-md bg-indigo-600 px-7 text-xs font-semibold text-white transition-colors hover:bg-indigo-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+      >
+        {loading ? "Creating account..." : "Create account"}
+
+        {!loading && <Check size={15} />}
+      </button>
+
+    </div>
+  </div>
+</motion.div>
+
   );
 };
-
 
 /* -------------------------------------------------------
    Main signup component
 ------------------------------------------------------- */
+
 
 const PatientSignup = ({ whichPage, setWhichPage }) => {
   const [currentTab, setCurrentTab] = useState(1);
@@ -877,104 +952,1077 @@ const PatientSignup = ({ whichPage, setWhichPage }) => {
 
   return (
     <section
-    data-lenis-prevent
+      data-lenis-prevent
+      aria-hidden={whichPage !== "signup"}
       className={`
-        scrollbar-thin 
-        absolute inset-0 z-10
-        flex h-full w-full flex-col
-        overflow-y-auto overflow-x-hidden
-        bg-[#fbfbfd] px-6 py-8
+        absolute inset-0 z-10 flex h-full w-full
+        overflow-hidden bg-[#fbfbfd]
         transition-all duration-500
-        sm:px-10 sm:py-9
         ${
           whichPage === "signup"
             ? "translate-x-0 opacity-100"
             : "pointer-events-none translate-x-full opacity-0"
         }
       `}
-      aria-hidden={whichPage !== "signup"}
     >
-      <div className="mx-auto flex min-h-full w-full flex-col">
+      {/* LEFT BRAND RAIL */}
 
-        {/* Brand */}
+      <aside className="
+        relative flex h-full w-[76px] shrink-0
+        items-center justify-center overflow-hidden
+        bg-[#e9eaf2]
+        sm:w-[110px]
+        lg:w-[150px]
+      ">
+        <h1 className="auth-editorial-heading -rotate-90">
+            Cur<span className="text-[#4f46e5]">Ease.</span>
+          </h1>
+      </aside>
 
-        <div className="mb-8 flex items-center gap-3">
-          <div className="
-            flex h-9 w-9 items-center justify-center
-            rounded-lg text-white
-          ">
-            <img src="/icon.png" />
+      {/* RIGHT FORM AREA */}
+
+      <main className="
+        flex min-w-0 flex-1 flex-col
+        overflow-hidden bg-[#fbfbfd]
+        px-5 py-6
+        sm:px-10 sm:py-8
+        lg:px-16 lg:py-10
+      ">
+
+        {/* Form container */}
+
+        <div className="
+          flex h-full min-h-0 w-full
+          flex-col
+          justify-center
+        ">
+          {/* Progress */}
+
+          <div className="shrink-0">
+            <SignupProgress
+              currentTab={currentTab}
+              setCurrentTab={setCurrentTab}
+            />
           </div>
 
-          <span className="
-            text-[15px] font-semibold tracking-tight text-slate-800
-          ">
-            CurEase
-          </span>
+          {/* Current step */}
 
-          <span className="
-            ml-auto text-[10px] font-medium uppercase
-            tracking-[0.15em] text-slate-400
-          ">
-            Patient registration
-          </span>
+          <div className="min-h-0 flex-1">
+            <AnimatePresence mode="wait">
+              {currentTab === 1 && (
+                <StepOne
+                  data={data}
+                  setData={setData}
+                  onNext={() => setCurrentTab(2)}
+                  setWhichPage={setWhichPage}
+                />
+              )}
+
+              {currentTab === 2 && (
+                <StepTwo
+                  data={data}
+                  setData={setData}
+                  onNext={() => setCurrentTab(3)}
+                  onPrevious={() => setCurrentTab(1)}
+                />
+              )}
+
+              {currentTab === 3 && (
+                <StepThree
+                  data={data}
+                  setData={setData}
+                  onNext={() => setCurrentTab(4)}
+                  onPrevious={() => setCurrentTab(2)}
+                />
+              )}
+
+              {currentTab === 4 && (
+                <StepFour
+                  data={data}
+                  onPrevious={() => setCurrentTab(3)}
+                  onRegister={handleRegister}
+                  loading={loading}
+                />
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-
-        {/* Progress */}
-
-        <SignupProgress
-          currentTab={currentTab}
-          setCurrentTab={setCurrentTab}
-        />
-
-        {/* Step content */}
-
-        <div className="flex-1">
-          <AnimatePresence mode="wait">
-            {currentTab === 1 && (
-              <StepOne
-                data={data}
-                setData={setData}
-                onNext={() => setCurrentTab(2)}
-                setWhichPage={setWhichPage}
-              />
-            )}
-
-            {currentTab === 2 && (
-              <StepTwo
-                data={data}
-                setData={setData}
-                onNext={() => setCurrentTab(3)}
-                onPrevious={() => setCurrentTab(1)}
-              />
-            )}
-
-            {currentTab === 3 && (
-              <StepThree
-                data={data}
-                onPrevious={() => setCurrentTab(2)}
-                onRegister={handleRegister}
-                loading={loading}
-              />
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Footer */}
-
-        {/* <div className="
-          mt-8 border-t border-slate-100
-          pt-4 text-center text-[10px]
-          tracking-wide text-slate-400
-        ">
-          CUREASE · YOUR HEALTH, SIMPLIFIED
-        </div> */}
-      </div>
+      </main>
     </section>
   );
 };
 
 export default PatientSignup;
+
+
+
+// import React, { useEffect, useState } from "react";
+// import { AddNewPatient } from "../BackendFunctions";
+// import {
+//   ArrowLeft,
+//   ArrowRight,
+//   Check,
+//   CheckCircle2,
+//   Eye,
+//   EyeOff,
+//   ImagePlus,
+//   Mail,
+//   Phone,
+//   ShieldCheck,
+//   Trash2,
+//   UserRound,
+// } from "lucide-react";
+// import { AnimatePresence, motion } from "framer-motion";
+// import toast from "react-hot-toast";
+
+
+// const transition = {
+//   duration: 0.35,
+//   ease: [0.22, 1, 0.36, 1],
+// };
+
+// const steps = [
+//   { number: 1, title: "Your details" },
+//   { number: 2, title: "Contact" },
+//   { number: 3, title: "Finish" },
+// ];
+
+
+// function checkPasswordConditions(password) {
+//   return {
+//     hasMinLength: password.length >= 8,
+//     hasNumberOrSymbol: /[\d\W]/.test(password),
+//     hasUpperAndLower:
+//       /[a-z]/.test(password) && /[A-Z]/.test(password),
+//   };
+// }
+
+
+// /* -------------------------------------------------------
+//    Progress indicator
+// ------------------------------------------------------- */
+
+// const SignupProgress = ({ currentTab, setCurrentTab }) => {
+//   return (
+//     <div className="mb-9">
+//       <div className="flex items-center justify-between gap-2">
+//         {steps.map((step, index) => {
+//           const completed = currentTab > step.number;
+//           const active = currentTab === step.number;
+
+//           return (
+//             <React.Fragment key={step.number}>
+//               <button
+//                 type="button"
+//                 onClick={() => {
+//                   if (completed) setCurrentTab(step.number);
+//                 }}
+//                 disabled={!completed}
+//                 className="group flex items-center gap-2.5 text-left disabled:cursor-default"
+//               >
+//                 <span
+//                   className={`
+//                     flex h-8 w-8 shrink-0 items-center justify-center
+//                     rounded-full border text-xs font-semibold
+//                     transition-all duration-200
+//                     ${
+//                       active
+//                         ? "border-indigo-600 bg-indigo-600 text-white"
+//                         : completed
+//                           ? "border-indigo-200 bg-indigo-50 text-indigo-600"
+//                           : "border-slate-200 bg-white text-slate-400"
+//                     }
+//                   `}
+//                 >
+//                   {completed ? <Check size={15} /> : step.number}
+//                 </span>
+
+//                 <span
+//                   className={`
+//                     hidden text-xs font-medium sm:block
+//                     ${
+//                       active
+//                         ? "text-indigo-700"
+//                         : completed
+//                           ? "text-slate-600"
+//                           : "text-slate-400"
+//                     }
+//                   `}
+//                 >
+//                   {step.title}
+//                 </span>
+//               </button>
+
+//               {index !== steps.length - 1 && (
+//                 <div className="h-px flex-1 bg-slate-200">
+//                   <motion.div
+//                     initial={false}
+//                     animate={{
+//                       scaleX: currentTab > step.number ? 1 : 0,
+//                     }}
+//                     transition={transition}
+//                     className="h-full origin-left bg-indigo-500"
+//                   />
+//                 </div>
+//               )}
+//             </React.Fragment>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// /* -------------------------------------------------------
+//    Reusable form field
+// ------------------------------------------------------- */
+
+// const SignupInput = ({
+//   icon: Icon,
+//   label,
+//   value,
+//   onChange,
+//   placeholder,
+//   type = "text",
+//   autoComplete,
+//   rightElement,
+//   required = true,
+// }) => {
+//   return (
+//     <div className="w-full">
+//       <label className="mb-2 block text-xs font-medium text-slate-600">
+//         {label}
+//       </label>
+
+//       <div className="relative">
+//         <Icon
+//           size={17}
+//           strokeWidth={1.7}
+//           className="
+//             pointer-events-none absolute left-4 top-1/2
+//             -translate-y-1/2 text-slate-400
+//           "
+//         />
+
+//         <input
+//           type={type}
+//           value={value}
+//           onChange={onChange}
+//           placeholder={placeholder}
+//           autoComplete={autoComplete}
+//           required={required}
+//           className="
+//             h-[50px] w-full rounded-lg
+//             border border-slate-200 bg-white
+//             pl-11 pr-12 text-sm text-slate-800
+//             outline-none placeholder:text-slate-400
+//             transition-all duration-200
+//             hover:border-slate-300
+//             focus:border-indigo-400
+//             focus:ring-4 focus:ring-indigo-500/10
+//           "
+//         />
+
+//         {rightElement}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// /* -------------------------------------------------------
+//    Password requirements
+// ------------------------------------------------------- */
+
+// const PasswordRequirements = ({ conditions }) => {
+//   const requirements = [
+//     {
+//       label: "At least 8 characters",
+//       valid: conditions.hasMinLength,
+//     },
+//     {
+//       label: "At least one number or symbol",
+//       valid: conditions.hasNumberOrSymbol,
+//     },
+//     {
+//       label: "Uppercase and lowercase letters",
+//       valid: conditions.hasUpperAndLower,
+//     },
+//   ];
+
+//   return (
+//     <div className="mt-3 space-y-2">
+//       {requirements.map((item) => (
+//         <div
+//           key={item.label}
+//           className={`
+//             flex items-center gap-2 text-[11px]
+//             transition-colors duration-200
+//             ${item.valid ? "text-emerald-600" : "text-slate-400"}
+//           `}
+//         >
+//           <CheckCircle2
+//             size={14}
+//             className={item.valid ? "text-emerald-500" : "text-slate-300"}
+//           />
+//           {item.label}
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+
+// /* -------------------------------------------------------
+//    Step one: Basic details
+// ------------------------------------------------------- */
+
+// const StepOne = ({
+//   data,
+//   setData,
+//   onNext,
+//   setWhichPage,
+// }) => {
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+//   const [previewImage, setPreviewImage] = useState(null);
+
+//   const passwordConditions = checkPasswordConditions(data.password);
+
+//   useEffect(() => {
+//     if (!data.image) {
+//       setPreviewImage(null);
+//       return;
+//     }
+
+//     const url = URL.createObjectURL(data.image);
+//     setPreviewImage(url);
+
+//     return () => URL.revokeObjectURL(url);
+//   }, [data.image]);
+
+//   const updateField = (key, value) => {
+//     setData((prev) => ({
+//       ...prev,
+//       [key]: value,
+//     }));
+//   };
+
+//   const handleImageChange = (e) => {
+//     const file = e.target.files?.[0];
+
+//     if (!file) return;
+
+//     if (!file.type.startsWith("image/")) {
+//       toast.error("Please select a valid image");
+//       e.target.value = "";
+//       return;
+//     }
+
+//     if (file.size > 5 * 1024 * 1024) {
+//       toast.error("Image must be smaller than 5 MB");
+//       e.target.value = "";
+//       return;
+//     }
+
+//     updateField("image", file);
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     if (!data.fName.trim() || !data.lName.trim()) {
+//       toast.error("Please enter your full name");
+//       return;
+//     }
+
+//     if (
+//       !passwordConditions.hasMinLength ||
+//       !passwordConditions.hasNumberOrSymbol ||
+//       !passwordConditions.hasUpperAndLower
+//     ) {
+//       toast.error("Please meet all password requirements");
+//       return;
+//     }
+
+//     if (data.password !== data.repassword) {
+//       toast.error("Passwords do not match");
+//       return;
+//     }
+
+//     onNext();
+//   };
+
+//   return (
+//     <motion.form
+//       key="step-one"
+//       onSubmit={handleSubmit}
+//       initial={{ opacity: 0, x: 15 }}
+//       animate={{ opacity: 1, x: 0 }}
+//       exit={{ opacity: 0, x: -15 }}
+//       transition={transition}
+//       className="flex flex-col"
+//     >
+//       <div className="mb-7">
+//         <p className="
+//           mb-2 text-[10px] font-semibold uppercase
+//           tracking-[0.2em] text-indigo-500
+//         ">
+//           Step 01 / Personal information
+//         </p>
+
+//         <h2 className="
+//           text-3xl font-semibold tracking-tight text-slate-900
+//         ">
+//           Create your account
+//         </h2>
+
+//         <p className="mt-2 text-sm leading-6 text-slate-500">
+//           Let's start with a few details about you.
+//         </p>
+//       </div>
+
+//       {/* Profile image */}
+
+//       <div className="
+//         mb-7 flex items-center gap-5
+//         border-b border-slate-100 pb-7
+//       ">
+//         <div className="
+//           relative flex h-[76px] w-[76px] shrink-0
+//           items-center justify-center overflow-hidden
+//           rounded-xl border border-slate-200
+//           bg-slate-100
+//         ">
+//           {previewImage ? (
+//             <img
+//               src={previewImage}
+//               alt="Profile preview"
+//               className="h-full w-full object-cover"
+//             />
+//           ) : (
+//             <UserRound size={32} strokeWidth={1.3} className="text-slate-400" />
+//           )}
+//         </div>
+
+//         <div className="min-w-0">
+//           <p className="text-sm font-medium text-slate-800">
+//             Profile photo
+//             <span className="ml-2 text-[10px] font-normal text-slate-400">
+//               Optional
+//             </span>
+//           </p>
+
+//           <p className="mt-1 text-xs text-slate-400">
+//             JPG, PNG or WEBP. Maximum 5 MB.
+//           </p>
+
+//           <div className="mt-3 flex items-center gap-3">
+//             <label
+//               htmlFor="patient-signup-image"
+//               className="
+//                 inline-flex cursor-pointer items-center gap-1.5
+//                 text-xs font-semibold text-indigo-600
+//                 transition-colors hover:text-indigo-800
+//               "
+//             >
+//               <ImagePlus size={15} />
+//               {previewImage ? "Change photo" : "Upload photo"}
+//             </label>
+
+//             {previewImage && (
+//               <button
+//                 type="button"
+//                 onClick={() => updateField("image", null)}
+//                 className="
+//                   inline-flex items-center gap-1
+//                   text-xs text-slate-400
+//                   transition-colors hover:text-red-500
+//                 "
+//               >
+//                 <Trash2 size={14} />
+//                 Remove
+//               </button>
+//             )}
+//           </div>
+
+//           <input
+//             type="file"
+//             id="patient-signup-image"
+//             accept="image/*"
+//             hidden
+//             onChange={handleImageChange}
+//           />
+//         </div>
+//       </div>
+
+//       {/* Name */}
+
+//       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+//         <SignupInput
+//           icon={UserRound}
+//           label="First name"
+//           placeholder="Your first name"
+//           value={data.fName}
+//           onChange={(e) => updateField("fName", e.target.value)}
+//           autoComplete="given-name"
+//         />
+
+//         <SignupInput
+//           icon={UserRound}
+//           label="Last name"
+//           placeholder="Your last name"
+//           value={data.lName}
+//           onChange={(e) => updateField("lName", e.target.value)}
+//           autoComplete="family-name"
+//         />
+//       </div>
+
+//       {/* Password */}
+
+//       <div className="mt-5">
+//         <SignupInput
+//           icon={ShieldCheck}
+//           label="Password"
+//           placeholder="Create a strong password"
+//           type={showPassword ? "text" : "password"}
+//           value={data.password}
+//           onChange={(e) => updateField("password", e.target.value)}
+//           autoComplete="new-password"
+//           rightElement={
+//             <button
+//               type="button"
+//               onClick={() => setShowPassword((prev) => !prev)}
+//               aria-label={showPassword ? "Hide password" : "Show password"}
+//               className="
+//                 absolute right-4 top-1/2 -translate-y-1/2
+//                 text-slate-400 hover:text-slate-700
+//               "
+//             >
+//               {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+//             </button>
+//           }
+//         />
+
+//         <PasswordRequirements conditions={passwordConditions} />
+//       </div>
+
+//       {/* Confirm password */}
+
+//       <div className="mt-5">
+//         <SignupInput
+//           icon={ShieldCheck}
+//           label="Confirm password"
+//           placeholder="Enter your password again"
+//           type={showConfirmPassword ? "text" : "password"}
+//           value={data.repassword}
+//           onChange={(e) => updateField("repassword", e.target.value)}
+//           autoComplete="new-password"
+//           rightElement={
+//             <button
+//               type="button"
+//               onClick={() => setShowConfirmPassword((prev) => !prev)}
+//               aria-label={
+//                 showConfirmPassword ? "Hide password" : "Show password"
+//               }
+//               className="
+//                 absolute right-4 top-1/2 -translate-y-1/2
+//                 text-slate-400 hover:text-slate-700
+//               "
+//             >
+//               {showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+//             </button>
+//           }
+//         />
+
+//         {data.repassword.length > 0 && (
+//           <p className={`
+//             mt-2 text-[11px]
+//             ${
+//               data.password === data.repassword
+//                 ? "text-emerald-600"
+//                 : "text-red-500"
+//             }
+//           `}>
+//             {data.password === data.repassword
+//               ? "Passwords match"
+//               : "Passwords do not match"}
+//           </p>
+//         )}
+//       </div>
+
+//       {/* Actions */}
+
+//       <div className="
+//         mt-8 flex flex-col-reverse items-center
+//         justify-between gap-4 border-t border-slate-100
+//         pt-6 sm:flex-row mb-10
+//       ">
+//         <p className="text-xs text-slate-400">
+//           Already have an account?{" "}
+//           <button
+//             type="button"
+//             onClick={() => setWhichPage("login")}
+//             className="font-semibold text-indigo-600 hover:text-indigo-800"
+//           >
+//             Sign in
+//           </button>
+//         </p>
+
+//         <button
+//           type="submit"
+//           className="
+//             flex h-[48px] w-full items-center justify-center
+//             gap-3 rounded-lg bg-indigo-600 px-6
+//             text-sm font-semibold text-white
+//             transition-all duration-200
+//             hover:bg-indigo-700 active:scale-[0.99]
+//             sm:w-auto
+//           "
+//         >
+//           Continue
+//           <ArrowRight size={16} />
+//         </button>
+//       </div>
+//     </motion.form>
+//   );
+// };
+
+
+// /* -------------------------------------------------------
+//    Step two: Contact details
+// ------------------------------------------------------- */
+
+// const StepTwo = ({ data, setData, onNext, onPrevious }) => {
+//   const [email, setEmail] = useState(data.email);
+//   const [phone, setPhone] = useState(data.phone);
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     if (!email.trim() || !phone.trim()) {
+//       toast.error("Please complete your contact details");
+//       return;
+//     }
+
+//     setData((prev) => ({
+//       ...prev,
+//       email: email.trim(),
+//       phone: phone.trim(),
+//     }));
+
+//     onNext();
+//   };
+
+//   return (
+//     <motion.form
+//       key="step-two"
+//       onSubmit={handleSubmit}
+//       initial={{ opacity: 0, x: 15 }}
+//       animate={{ opacity: 1, x: 0 }}
+//       exit={{ opacity: 0, x: -15 }}
+//       transition={transition}
+//       className="flex flex-col"
+//     >
+//       <div className="mb-8">
+//         <p className="
+//           mb-2 text-[10px] font-semibold uppercase
+//           tracking-[0.2em] text-indigo-500
+//         ">
+//           Step 02 / Contact information
+//         </p>
+
+//         <h2 className="
+//           text-3xl font-semibold tracking-tight text-slate-900
+//         ">
+//           How can we reach you?
+//         </h2>
+
+//         <p className="mt-2 text-sm leading-6 text-slate-500">
+//           These details help us keep you updated about your account.
+//         </p>
+//       </div>
+
+//       <div className="
+//         mb-7 border-y border-slate-100
+//         py-6
+//       ">
+//         <div className="mb-6 flex items-center gap-4">
+//           <div className="
+//             flex h-12 w-12 items-center justify-center
+//             rounded-xl bg-indigo-50 text-indigo-600
+//           ">
+//             <UserRound size={22} strokeWidth={1.5} />
+//           </div>
+
+//           <div>
+//             <p className="text-sm font-semibold text-slate-800">
+//               {data.fName} {data.lName}
+//             </p>
+//             <p className="mt-1 text-xs text-slate-400">
+//               Your CurEase profile
+//             </p>
+//           </div>
+//         </div>
+
+//         <div className="space-y-5">
+//           <SignupInput
+//             icon={Mail}
+//             label="Email address"
+//             placeholder="you@example.com"
+//             type="email"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//             autoComplete="email"
+//           />
+
+//           <SignupInput
+//             icon={Phone}
+//             label="Phone number"
+//             placeholder="Enter your phone number"
+//             type="tel"
+//             value={phone}
+//             onChange={(e) => setPhone(e.target.value)}
+//             autoComplete="tel"
+//           />
+//         </div>
+//       </div>
+
+//       <div className="
+//         flex flex-col-reverse items-center
+//         justify-between gap-4 pt-2 sm:flex-row
+//       ">
+//         <button
+//           type="button"
+//           onClick={onPrevious}
+//           className="
+//             flex h-[46px] w-full items-center
+//             justify-center gap-2 rounded-lg
+//             border border-slate-200 bg-white px-5
+//             text-sm font-medium text-slate-600
+//             transition-colors hover:bg-slate-50
+//             sm:w-auto
+//           "
+//         >
+//           <ArrowLeft size={16} />
+//           Previous
+//         </button>
+
+//         <button
+//           type="submit"
+//           className="
+//             flex h-[48px] w-full items-center
+//             justify-center gap-3 rounded-lg
+//             bg-indigo-600 px-6 text-sm font-semibold
+//             text-white transition-all duration-200
+//             hover:bg-indigo-700 active:scale-[0.99]
+//             sm:w-auto
+//           "
+//         >
+//           Review details
+//           <ArrowRight size={16} />
+//         </button>
+//       </div>
+//     </motion.form>
+//   );
+// };
+
+
+// /* -------------------------------------------------------
+//    Step three: Review and register
+// ------------------------------------------------------- */
+
+// const StepThree = ({
+//   data,
+//   onPrevious,
+//   onRegister,
+//   loading,
+// }) => {
+//   return (
+//     <motion.div
+//       key="step-three"
+//       initial={{ opacity: 0, x: 15 }}
+//       animate={{ opacity: 1, x: 0 }}
+//       exit={{ opacity: 0, x: -15 }}
+//       transition={transition}
+//       className="flex flex-col"
+//     >
+//       <div className="mb-7">
+//         <p className="
+//           mb-2 text-[10px] font-semibold uppercase
+//           tracking-[0.2em] text-indigo-500
+//         ">
+//           Step 03 / Final review
+//         </p>
+
+//         <h2 className="
+//           text-3xl font-semibold tracking-tight text-slate-900
+//         ">
+//           Almost there.
+//         </h2>
+
+//         <p className="mt-2 text-sm leading-6 text-slate-500">
+//           Take a moment to review your information before creating your account.
+//         </p>
+//       </div>
+
+//       <div className="
+//         border-y border-slate-100 py-6
+//       ">
+//         <div className="mb-6 flex items-center gap-4">
+//           <div className="
+//             flex h-[68px] w-[68px] shrink-0
+//             items-center justify-center overflow-hidden
+//             rounded-xl border border-slate-200
+//             bg-slate-100
+//           ">
+//             {data.image ? (
+//               <img
+//                 src={URL.createObjectURL(data.image)}
+//                 alt="Profile"
+//                 className="h-full w-full object-cover"
+//               />
+//             ) : (
+//               <UserRound size={30} className="text-slate-400" />
+//             )}
+//           </div>
+
+//           <div>
+//             <p className="text-lg font-semibold text-slate-800">
+//               {data.fName} {data.lName}
+//             </p>
+//             <p className="mt-1 text-xs text-slate-400">
+//               Patient account
+//             </p>
+//           </div>
+//         </div>
+
+//         <div className="space-y-4">
+//           <div className="flex items-center gap-3">
+//             <Mail size={17} className="text-slate-400" />
+//             <div className="min-w-0">
+//               <p className="text-[10px] uppercase tracking-wider text-slate-400">
+//                 Email
+//               </p>
+//               <p className="mt-0.5 break-all text-sm text-slate-700">
+//                 {data.email}
+//               </p>
+//             </div>
+//           </div>
+
+//           <div className="flex items-center gap-3">
+//             <Phone size={17} className="text-slate-400" />
+//             <div>
+//               <p className="text-[10px] uppercase tracking-wider text-slate-400">
+//                 Phone
+//               </p>
+//               <p className="mt-0.5 text-sm text-slate-700">
+//                 {data.phone}
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="
+//         mt-6 flex items-start gap-3
+//         rounded-lg bg-indigo-50/70 p-4
+//       ">
+//         <ShieldCheck
+//           size={19}
+//           className="mt-0.5 shrink-0 text-indigo-600"
+//         />
+
+//         <p className="text-xs leading-5 text-slate-600">
+//           Your account information will be used to personalize
+//           your CurEase experience. You can update your profile
+//           details later.
+//         </p>
+//       </div>
+
+//       <div className="
+//         mt-8 flex flex-col-reverse items-center
+//         justify-between gap-4 sm:flex-row
+//       ">
+//         <button
+//           type="button"
+//           onClick={onPrevious}
+//           disabled={loading}
+//           className="
+//             flex h-[46px] w-full items-center
+//             justify-center gap-2 rounded-lg
+//             border border-slate-200 bg-white px-5
+//             text-sm font-medium text-slate-600
+//             transition-colors hover:bg-slate-50
+//             disabled:opacity-50 sm:w-auto
+//           "
+//         >
+//           <ArrowLeft size={16} />
+//           Previous
+//         </button>
+
+//         <button
+//           type="button"
+//           onClick={onRegister}
+//           disabled={loading}
+//           className="
+//             flex h-[48px] w-full items-center
+//             justify-center gap-3 rounded-lg
+//             bg-indigo-600 px-6 text-sm font-semibold
+//             text-white transition-all duration-200
+//             hover:bg-indigo-700 active:scale-[0.99]
+//             disabled:cursor-not-allowed disabled:opacity-60
+//             sm:w-auto
+//           "
+//         >
+//           {loading ? "Creating account..." : "Create account"}
+//           {!loading && <ArrowRight size={16} />}
+//         </button>
+//       </div>
+//     </motion.div>
+//   );
+// };
+
+
+// /* -------------------------------------------------------
+//    Main signup component
+// ------------------------------------------------------- */
+
+// const PatientSignup = ({ whichPage, setWhichPage }) => {
+//   const [currentTab, setCurrentTab] = useState(1);
+//   const [loading, setLoading] = useState(false);
+
+//   const [data, setData] = useState({
+//     fName: "",
+//     lName: "",
+//     email: "",
+//     password: "",
+//     repassword: "",
+//     phone: "",
+//     image: null,
+//   });
+
+//   const handleRegister = async () => {
+//     if (loading) return;
+
+//     try {
+//       setLoading(true);
+
+//       await AddNewPatient(
+//         data.phone,
+//         data.email,
+//         `${data.fName.trim()} ${data.lName.trim()}`,
+//         data.password,
+//         data.image
+//       );
+
+//       toast.success("Your account has been created!");
+
+//       setTimeout(() => {
+//         setWhichPage("login");
+//       }, 900);
+//     } catch (error) {
+//       console.error("Registration error:", error);
+//       toast.error(
+//         error?.message || "Registration failed. Please try again."
+//       );
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <section
+//     data-lenis-prevent
+//       className={`
+//         scrollbar-thin 
+//         absolute inset-0 z-10
+//         flex h-full w-full flex-col
+//         overflow-y-auto overflow-x-hidden
+//         bg-[#fbfbfd] px-6 py-8
+//         transition-all duration-500
+//         sm:px-10 sm:py-9
+//         ${
+//           whichPage === "signup"
+//             ? "translate-x-0 opacity-100"
+//             : "pointer-events-none translate-x-full opacity-0"
+//         }
+//       `}
+//       aria-hidden={whichPage !== "signup"}
+//     >
+//       <div className="mx-auto flex min-h-full w-full flex-col">
+
+//         {/* Brand */}
+
+//         <div className="mb-8 flex items-center gap-3">
+//           <div className="
+//             flex h-9 w-9 items-center justify-center
+//             rounded-lg text-white
+//           ">
+//             <img src="/icon.png" />
+//           </div>
+
+//           <span className="
+//             text-[15px] font-semibold tracking-tight text-slate-800
+//           ">
+//             CurEase
+//           </span>
+
+//           <span className="
+//             ml-auto text-[10px] font-medium uppercase
+//             tracking-[0.15em] text-slate-400
+//           ">
+//             Patient registration
+//           </span>
+//         </div>
+
+//         {/* Progress */}
+
+//         <SignupProgress
+//           currentTab={currentTab}
+//           setCurrentTab={setCurrentTab}
+//         />
+
+//         {/* Step content */}
+
+//         <div className="flex-1">
+//           <AnimatePresence mode="wait">
+//             {currentTab === 1 && (
+//               <StepOne
+//                 data={data}
+//                 setData={setData}
+//                 onNext={() => setCurrentTab(2)}
+//                 setWhichPage={setWhichPage}
+//               />
+//             )}
+
+//             {currentTab === 2 && (
+//               <StepTwo
+//                 data={data}
+//                 setData={setData}
+//                 onNext={() => setCurrentTab(3)}
+//                 onPrevious={() => setCurrentTab(1)}
+//               />
+//             )}
+
+//             {currentTab === 3 && (
+//               <StepThree
+//                 data={data}
+//                 onPrevious={() => setCurrentTab(2)}
+//                 onRegister={handleRegister}
+//                 loading={loading}
+//               />
+//             )}
+//           </AnimatePresence>
+//         </div>
+
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default PatientSignup;
 
 // import React, { useEffect, useState } from 'react'
 // import { AddNewPatient } from '../BackendFunctions';

@@ -2,28 +2,21 @@
 import React, { useState } from "react";
 import "./initial.css";
 
-import { useGoogleLogin } from "@react-oauth/google";
 import {
   ArrowRight,
   ArrowUpRight,
   Eye,
   EyeOff,
-  Info,
-  LockKeyhole,
-  Mail,
-  UserRound,
-  BrushCleaning,
+  ArrowLeft,
 } from "lucide-react";
 
+import { useGoogleLogin } from "@react-oauth/google";
 import { AnimatePresence, motion } from "framer-motion";
 import { MakeLogin } from "../BackendFunctions";
 import toast, { Toaster } from "react-hot-toast";
 import PatientSignup from "./PatientSignup";
 
-const pageTransition = {
-  duration: 0.35,
-  ease: [0.22, 1, 0.36, 1],
-};
+const ease = [0.22, 1, 0.36, 1];
 
 /* --------------------------------------------------
    FORGOT PASSWORD
@@ -76,97 +69,150 @@ const ForgotPassword = ({ setForgotpassshow }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 24 }}
+      initial={{ opacity: 0, x: 12 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 24 }}
-      transition={pageTransition}
-      className="absolut inset-0 z-20 flex flex-col bg-[#fafaff] p-7 sm:p-10"
+      exit={{ opacity: 0, x: 12 }}
+      transition={{ duration: 0.3, ease }}
+      className="absolut w-full inset-0 z-20 flex flex-col bg-[#fafaff] px-4 py-9 "
     >
       <button
         type="button"
         onClick={() => setForgotpassshow(false)}
-        className="mb-10 flex w-fit items-center gap-2 text-sm text-slate-500 transition-colors hover:text-indigo-600"
+        className="group flex w-fit items-center gap-2 text-[13px] text-slate-500 transition-colors hover:text-indigo-600"
       >
-        <ArrowRight className="rotate-180" size={16} />
+        <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
         Back to sign in
       </button>
 
-      <div className="my-auto">
-        {/* <div className="mb-7 flex h-11 w-11 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50 text-indigo-600">
-          <LockKeyhole size={20} strokeWidth={1.7} />
-        </div> */}
+      <div className="my-auto w-full max-w-[390px]">
+        {/* <span className="text-[10px] font-semibold tracking-[0.2em] text-slate-400">
+          ACCOUNT RECOVERY
+        </span> */}
 
-        {/* <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
-          Account recovery
-        </p> */}
-
-        <h2 className="text-3xl font-semibold tracking-tight text-slate-900">
-          Reset your password
+        <h2 className="mt-5 text-4xl font-semibold tracking-[-0.065em] text-slate-950">
+          Reset password.
         </h2>
 
-        <p className="mt-3 max-w-sm text-sm leading-6 text-slate-500">
-          Enter the email address associated with your account. We'll send
-          you the password recovery email.
+        <p className="mt-3 text-[13px] leading-6 text-slate-500">
+          Enter the email address associated with your account.
         </p>
 
-        <form onSubmit={sendforgotmail} className="mt-9">
+        <form onSubmit={sendforgotmail} className="mt-10">
           <label
             htmlFor="forgot-email"
-            className="mb-2 block text-xs font-medium text-slate-600"
+            className="mb-2 block text-[12px] font-medium text-slate-600"
           >
             Email address
           </label>
 
-          <div className="relative">
-            <Mail
-              size={17}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-            />
-
-            <input
-              id="forgot-email"
-              type="email"
-              placeholder="you@example.com"
-              value={mail}
-              disabled={sent || sending}
-              onChange={(e) => setMail(e.target.value)}
-              required
-              className="auth-input pl-11"
-            />
-          </div>
+          <input
+            id="forgot-email"
+            type="email"
+            placeholder="you@example.com"
+            value={mail}
+            disabled={sent || sending}
+            onChange={(e) => setMail(e.target.value)}
+            required
+            className="auth-line-input"
+          />
 
           <button
             type={sent ? "button" : "submit"}
-            disabled={sending}
+            disabled={sending || mail.length<5}
             onClick={sent ? () => setForgotpassshow(false) : undefined}
-            className="auth-primary mt-5"
+            className="mt-7 flex h-[49px] w-full items-center justify-between rounded-xs bg-[#4f46e5] px-5 text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4338ca] hover:shadow-lg hover:shadow-indigo-500/15 active:translate-y-0 disabled:opacity-60"
           >
-            {sending
-              ? "Sending..."
-              : sent
-              ? "Done"
-              : "Send recovery email"}
-
-            {!sending && <ArrowRight size={16} />}
+            {sending ? "Sending..." : sent ? "Done" : "Send recovery email"}
+            {!sending && <ArrowRight size={17} />}
           </button>
         </form>
 
         {sent && (
-          <p className="mt-4 text-xs leading-5 text-emerald-700">
-            Check your inbox for the password recovery email.
+          <p className="mt-4 text-xs text-emerald-700">
+            Check your inbox for the recovery email.
           </p>
         )}
       </div>
-
-      {/* <p className="mt-10 text-xs text-slate-400">
-        CurEase · Account support
-      </p> */}
     </motion.div>
   );
 };
 
 /* --------------------------------------------------
-   LOGIN FORM
+   BRAND SIDE
+-------------------------------------------------- */
+
+const BrandPanel = () => {
+  return (
+    <section className="relative flex h-full min-h-0 flex-col justify-between overflow-hidden bg-[#f2f3f8] px-8 py-8 sm:px-12 sm:py-10 lg:px-[8%] lg:py-12">
+
+      {/* Brand identity */}
+
+      {/* <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease }}
+        className="relative z-10 flex items-center gap-3"
+      >
+        <div className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#4f46e5] text-[23px] font-semibold tracking-[-0.1em] text-white shadow-[0_5px_15px_rgba(79,70,229,0.16)]">
+          C
+        </div>
+
+        <span className="text-[21px] font-semibold tracking-[-0.07em] text-[#171923]">
+          CurEase
+        </span>
+      </motion.div> */}
+
+      {/* Typography */}
+
+      <div className="relative z-10 my-auto py-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.1, ease }}
+        >
+          {/* <span className="mb-5 block text-[10px] font-semibold tracking-[0.22em] text-slate-400">
+            PATIENT PORTAL
+          </span> */}
+
+          <h1 className="auth-editorial-heading">
+            Cur<span className="text-[#4f46e5]">Ease.</span>
+          </h1>
+
+          {/* <div className="mt-7 flex items-center gap-3">
+            <div className="h-[1px] w-10 bg-[#4f46e5]" />
+            <span className="text-[12px] font-medium tracking-wide text-slate-500">
+              Patient access
+            </span>
+          </div> */}
+        </motion.div>
+      </div>
+
+      {/* Minimal brand signature */}
+
+      {/* <div className="relative z-10 flex items-center justify-between border-t border-slate-300/70 pt-5">
+        <span className="text-[10px] font-semibold tracking-[0.16em] text-slate-400">
+          CUREASE
+        </span>
+
+        <span className="text-[11px] text-slate-400">
+          Patient portal
+        </span>
+      </div> */}
+
+      {/* Very subtle typographic background detail */}
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-24 -right-12 select-none text-[300px] font-semibold leading-none tracking-[-0.13em] text-[#e9eaf2]/70"
+      >
+        C
+      </div>
+    </section>
+  );
+};
+
+/* --------------------------------------------------
+   LOGIN
 -------------------------------------------------- */
 
 const LoginContainer = ({ whichPage, setWhichPage }) => {
@@ -221,9 +267,7 @@ const LoginContainer = ({ whichPage, setWhichPage }) => {
     e.preventDefault();
 
     if (!mail.trim() || !password) {
-      toast("Please fill in all fields.", {
-        icon: <BrushCleaning size={17} />,
-      });
+      toast.error("Please fill in all fields.");
       return;
     }
 
@@ -235,9 +279,7 @@ const LoginContainer = ({ whichPage, setWhichPage }) => {
       if (code === 1) {
         toast.error("User not found.");
       } else if (code === 2) {
-        toast("Incorrect password.", {
-          icon: <Info size={17} />,
-        });
+        toast.error("Incorrect password.");
       } else if (code === 0) {
         toast.success("Welcome back!");
 
@@ -257,237 +299,239 @@ const LoginContainer = ({ whichPage, setWhichPage }) => {
 
   return (
     <div
-      className={`relative w-full overflow-hidden bg-[#fafaff] p-7 sm:p-10 transition-all duration-500 ${
+      className={`absolute inset-0 h-full w-full transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         whichPage === "signup" ? "-translate-y-full" : "translate-y-0"
       }`}
     >
-      <AnimatePresence mode="wait">
-        {forgotpassShow ? (
-          <ForgotPassword
-            key="forgot-password"
-            setForgotpassshow={setForgotpassshow}
-          />
-        ) : (
-          <motion.div
-            key="login-form"
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -16 }}
-            transition={pageTransition}
-            className="mx-auto flex w-full max-w-sm flex-col"
-          >
-            {/* Brand */}
+      <div className="grid h-full min-h-0 grid-cols-1 md:grid-cols-[1.08fr_0.92fr]">
 
-            {/* <div className="mb-9 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-semibold text-white">
-                C
-              </div>
+        {/* BRAND */}
 
-              <span className="text-sm font-semibold tracking-[0.12em] text-slate-800">
-                CUREASE
-              </span>
-            </div> */}
+        <BrandPanel />
 
-            {/* Heading */}
+        {/* FORM */}
 
-            <div className="mb-8">
-              {/* <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">
-                Your account
-              </p> */}
+        <section className="relative flex min-h-0 items-center justify-center overflow-hidden bg-[#fafaff] px-8 py-8 sm:px-12 lg:px-[12%]">
 
-              <h1 className="text-[2rem] font-semibold tracking-tight text-slate-900">
-                Welcome back.
-              </h1>
-
-              {/* <p className="mt-2 text-sm leading-6 text-slate-500">
-                Sign in to continue where you left off.
-              </p> */}
-            </div>
-
-            {/* Google */}
-
-            <button
-              type="button"
-              onClick={() => login()}
-              className="flex h-12 w-full items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-700 transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 active:scale-[0.99]"
-            >
-              <img
-                src="/google.png"
-                alt="Google"
-                className="h-[18px] w-[18px] object-contain"
+          <AnimatePresence mode="wait">
+            {forgotpassShow ? (
+              <ForgotPassword
+                key="forgot"
+                setForgotpassshow={setForgotpassshow}
               />
+            ) : (
+              <motion.div
+                key="login"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35, ease }}
+                className="w-full max-w-[390px]"
+              >
 
-              Continue with Google
-            </button>
+                {/* Heading */}
 
-            {/* Divider */}
+                <div className="mb-9">
+                  {/* <span className="text-[10px] font-semibold tracking-[0.2em] text-slate-400">
+                    ACCOUNT
+                  </span> */}
 
-            <div className="my-7 flex items-center gap-4">
-              <div className="h-px flex-1 bg-slate-200" />
+                  <h2 className="mt-4 text-[39px] font-semibold tracking-[-0.07em] text-[#171923] sm:text-[43px]">
+                    Sign in<span className="text-[#4f46e5]">.</span>
+                  </h2>
 
-              <span className="whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.12em] text-slate-400">
-                Or use email
-              </span>
-
-              <div className="h-px flex-1 bg-slate-200" />
-            </div>
-
-            {/* Login form */}
-
-            <form onSubmit={handleLogin}>
-              <div className="mb-5">
-                <label
-                  htmlFor="login-email"
-                  className="mb-2 block text-xs font-medium text-slate-600"
-                >
-                  Email address
-                </label>
-
-                <div className="relative">
-                  <Mail
-                    size={17}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                  />
-
-                  <input
-                    id="login-email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={mail}
-                    onChange={(e) => setMail(e.target.value)}
-                    autoComplete="email"
-                    required
-                    className="auth-input pl-11"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="mb-2 flex items-center justify-between">
-                  <label
-                    htmlFor="login-password"
-                    className="text-xs font-medium text-slate-600"
-                  >
-                    Password
-                  </label>
-
-                  <button
-                    type="button"
-                    onClick={() => setForgotpassshow(true)}
-                    className="text-xs font-medium text-indigo-600 transition-colors hover:text-indigo-800"
-                  >
-                    Forgot password?
-                  </button>
+                  {/* <p className="mt-2 text-[13px] text-slate-500">
+                    Welcome back to CurEase.
+                  </p> */}
                 </div>
 
-                <div className="relative">
-                  <LockKeyhole
-                    size={17}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                  />
+                {/* Form first */}
 
-                  <input
-                    id="login-password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    required
-                    className="auth-input pl-11 pr-12"
-                  />
+                <form onSubmit={handleLogin}>
 
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-700"
+                  {/* Email */}
+
+                  <div className="mb-7">
+                    <label
+                      htmlFor="login-email"
+                      className="mb-2 block text-[12px] font-medium text-slate-500"
+                    >
+                      Email address
+                    </label>
+
+                    <input
+                      id="login-email"
+                      type="email"
+                      placeholder="you@example.com"
+                      value={mail}
+                      onChange={(e) => setMail(e.target.value)}
+                      autoComplete="email"
+                      required
+                      className="auth-line-input"
+                    />
+                  </div>
+
+                  {/* Password */}
+
+                  <div>
+                    <div className="mb-2 flex items-center justify-between">
+                      <label
+                        htmlFor="login-password"
+                        className="text-[12px] font-medium text-slate-500"
+                      >
+                        Password
+                      </label>
+
+                      <button
+                        type="button"
+                        onClick={() => setForgotpassshow(true)}
+                        className="text-[11px] font-medium text-[#7772d9] transition-colors hover:text-[#4338ca]"
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        id="login-password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
+                        required
+                        className="auth-line-input pr-10"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                        className="absolute right-1 top-1/2 -translate-y-1/2 p-2 text-slate-400 transition-colors hover:text-slate-800"
+                      >
+                        {showPassword ? (
+                          <EyeOff size={16} />
+                        ) : (
+                          <Eye size={16} />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Remember */}
+
+                  {/* <label className="mt-6 flex w-fit cursor-pointer items-center gap-2.5 text-[11px] text-slate-500">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="h-3.5 w-3.5 cursor-pointer accent-[#4f46e5]"
+                    />
+                    Remember me
+                  </label> */}
+
+                  <div className="flex gap-10 mt-8">
+
+                  {/* Main action */}
+                  <motion.button
+                    type="submit"
+                    disabled={loading}
+                    whileHover={!loading ? { y: -2 } : {}}
+                    whileTap={!loading ? { scale: 0.985 } : {}}
+                    className="flex h-[51px] w-full items-center justify-between rounded-xs bg-[#4f46e5] px-5 text-[13px] font-semibold text-white shadow-[0_5px_15px_rgba(79,70,229,0.12)] transition-colors hover:bg-[#4338ca] hover:shadow-[0_9px_24px_rgba(79,70,229,0.19)] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {showPassword ? (
-                      <EyeOff size={17} />
-                    ) : (
-                      <Eye size={17} />
+                    {loading ? "Signing in..." : "Sign in"}
+
+                    {!loading && (
+                      <ArrowRight size={18} />
                     )}
+                  </motion.button>
+
+
+                  <motion.button
+                  type="button"
+                  onClick={() => login()}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.99 }}
+                  className="flex h-[51px] w-full items-center justify-center gap-3 rounded-xs duration-200 border border-slate-200 bg-white text-[12px] font-medium text-slate-600 transition-all hover:border-slate-300 hover:shadow-xs cursor-pointer"
+                >
+                  <img
+                    src="/google.png"
+                    alt=""
+                    className="h-[16px] w-[16px] object-contain"
+                  />
+                  Google
+                </motion.button>
+                    </div>
+                </form>
+
+                {/* Alternative sign in */}
+{/* 
+                <div className="my-7 flex items-center gap-4">
+                  <div className="h-px flex-1 bg-slate-200" />
+                  <span className="text-[9px] font-semibold tracking-[0.15em] text-slate-400">
+                    OR
+                  </span>
+                  <div className="h-px flex-1 bg-slate-200" />
+                </div> */}
+
+                {/* <motion.button
+                  type="button"
+                  onClick={() => login()}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.99 }}
+                  className="flex h-[47px] w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white text-[12px] font-medium text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm"
+                >
+                  <img
+                    src="/google.png"
+                    alt=""
+                    className="h-[16px] w-[16px] object-contain"
+                  />
+                  Continue with Google
+                </motion.button> */}
+
+                {/* Signup */}
+
+                <div className="mt-8 flex items-center justify-center gap-1.5 text-[12px]">
+                  <span className="text-slate-400">
+                    Don't have an account?
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => setWhichPage("signup")}
+                    className="font-semibold text-[#4f46e5] transition-colors hover:text-[#3730a3]"
+                  >
+                    Create one
                   </button>
                 </div>
-              </div>
 
-              {/* Remember me */}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-              <label className="mt-6 flex w-fit cursor-pointer items-center gap-2.5 text-xs text-slate-500">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-3.5 w-3.5 accent-indigo-600"
-                />
-
-                Remember me
-              </label>
-
-              {/* Submit */}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="auth-primary mt-7"
-              >
-                {loading ? "Signing in..." : "Sign in"}
-
-                {!loading && <ArrowRight size={17} />}
-              </button>
-            </form>
-
-            {/* Signup */}
-
-            <div className="mt-8 border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
-              Don't have an account?
-
-              <button
-                type="button"
-                onClick={() => setWhichPage("signup")}
-                className="ml-1.5 font-semibold text-indigo-600 transition-colors hover:text-indigo-800"
-              >
-                Create one
-              </button>
-            </div>
-
-            {/* <p className="mt-7 text-center text-[10px] tracking-wide text-slate-400">
-              SECURE ACCESS · CUREASE
-            </p> */}
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </section>
+      </div>
     </div>
   );
 };
 
 /* --------------------------------------------------
-   MAIN SIGN IN PAGE
+   MAIN
 -------------------------------------------------- */
 
 const SignIn = () => {
   const [whichPage, setWhichPage] = useState("login");
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#f3f4f8] px-4 py-10 text-slate-900 sm:px-8">
-
-      {/* Subtle background details */}
-
-      <div className="pointer-events-none absolute left-0 top-0 h-[420px] w-[420px] rounded-full bg-indigo-100/30 blur-[100px]" />
-
-      <div className="pointer-events-none absolute bottom-0 right-0 h-[360px] w-[360px] rounded-full bg-violet-100/30 blur-[100px]" />
-
-      {/* Main panel */}
+    <main className="relative flex h-[100svh] min-h-0 w-full items-center justify-center overflow-hidden bg-[#f2f3f8] p-3 sm:p-5 lg:p-7">
 
       <motion.section
         layout
-        transition={pageTransition}
-        className={`relative z-10 w-full overflow-hidden rounded-2xl border border-white/80 bg-[#fafaff] shadow-[0_20px_80px_-35px_rgba(30,41,90,0.18)] ${
-          whichPage === "login" ? "max-w-[460px]" : "max-w-5xl"
-        }`}
+        transition={{ duration: 0.45, ease }}
+        className="relative h-full max-h-[780px] min-h-0 w-full max-w-[1240px] overflow-hidden rounded-[20px] border border-white/80 bg-white shadow-[0_25px_80px_-35px_rgba(15,23,42,0.2)]"
       >
         <LoginContainer
           whichPage={whichPage}
@@ -502,16 +546,16 @@ const SignIn = () => {
 
       <Toaster
         position="top-right"
-        reverseOrder={true}
+        reverseOrder
         toastOptions={{
           duration: 3000,
           style: {
-            border: "1px solid #e2e8f0",
-            borderRadius: "10px",
+            border: "1px solid #e5e7eb",
+            borderRadius: "12px",
             background: "#fff",
             color: "#334155",
             fontSize: "13px",
-            boxShadow: "0 8px 30px rgba(15, 23, 42, 0.07)",
+            boxShadow: "0 8px 30px rgba(15,23,42,0.07)",
           },
         }}
       />
@@ -520,6 +564,499 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
+
+// import React, { useState } from "react";
+// import "./initial.css";
+
+// import { useGoogleLogin } from "@react-oauth/google";
+// import {
+//   ArrowRight,
+//   ArrowUpRight,
+//   Eye,
+//   EyeOff,
+//   Info,
+//   LockKeyhole,
+//   Mail,
+//   UserRound,
+//   BrushCleaning,
+// } from "lucide-react";
+
+// import { AnimatePresence, motion } from "framer-motion";
+// import { MakeLogin } from "../BackendFunctions";
+// import toast, { Toaster } from "react-hot-toast";
+// import PatientSignup from "./PatientSignup";
+
+// const pageTransition = {
+//   duration: 0.35,
+//   ease: [0.22, 1, 0.36, 1],
+// };
+
+// /* --------------------------------------------------
+//    FORGOT PASSWORD
+// -------------------------------------------------- */
+
+// const ForgotPassword = ({ setForgotpassshow }) => {
+//   const [mail, setMail] = useState("");
+//   const [sending, setSending] = useState(false);
+//   const [sent, setSent] = useState(false);
+
+//   async function sendforgotmail(e) {
+//     e.preventDefault();
+
+//     if (!mail.trim()) {
+//       toast.error("Please enter your email address.");
+//       return;
+//     }
+
+//     try {
+//       setSending(true);
+
+//       const res = await fetch(
+//         `${import.meta.env.VITE_BACKEND_API_URL}/login/forgotPassword`,
+//         {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify({ email: mail.trim() }),
+//         }
+//       );
+
+//       const result = await res.json();
+
+//       if (result.code == 0) {
+//         toast.success("Password reset email sent.");
+//         setSent(true);
+//       } else if (result.code == 1) {
+//         toast.error("No account found with this email.");
+//       } else {
+//         toast.error(result.msg || "Something went wrong.");
+//       }
+//     } catch (error) {
+//       console.error("Forgot password error:", error);
+//       toast.error("Unable to connect. Please try again.");
+//     } finally {
+//       setSending(false);
+//     }
+//   }
+
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0, x: 24 }}
+//       animate={{ opacity: 1, x: 0 }}
+//       exit={{ opacity: 0, x: 24 }}
+//       transition={pageTransition}
+//       className="absolut inset-0 z-20 flex flex-col bg-[#fafaff] p-7 sm:p-10"
+//     >
+//       <button
+//         type="button"
+//         onClick={() => setForgotpassshow(false)}
+//         className="mb-10 flex w-fit items-center gap-2 text-sm text-slate-500 transition-colors hover:text-indigo-600"
+//       >
+//         <ArrowRight className="rotate-180" size={16} />
+//         Back to sign in
+//       </button>
+
+//       <div className="my-auto">
+
+//         <h2 className="text-3xl font-semibold tracking-tight text-slate-900">
+//           Reset your password
+//         </h2>
+
+//         <p className="mt-3 max-w-sm text-sm leading-6 text-slate-500">
+//           Enter the email address associated with your account. We'll send
+//           you the password recovery email.
+//         </p>
+
+//         <form onSubmit={sendforgotmail} className="mt-9">
+//           <label
+//             htmlFor="forgot-email"
+//             className="mb-2 block text-xs font-medium text-slate-600"
+//           >
+//             Email address
+//           </label>
+
+//           <div className="relative">
+//             <Mail
+//               size={17}
+//               className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+//             />
+
+//             <input
+//               id="forgot-email"
+//               type="email"
+//               placeholder="you@example.com"
+//               value={mail}
+//               disabled={sent || sending}
+//               onChange={(e) => setMail(e.target.value)}
+//               required
+//               className="auth-input pl-11"
+//             />
+//           </div>
+
+//           <button
+//             type={sent ? "button" : "submit"}
+//             disabled={sending}
+//             onClick={sent ? () => setForgotpassshow(false) : undefined}
+//             className="auth-primary mt-5"
+//           >
+//             {sending
+//               ? "Sending..."
+//               : sent
+//               ? "Done"
+//               : "Send recovery email"}
+
+//             {!sending && <ArrowRight size={16} />}
+//           </button>
+//         </form>
+
+//         {sent && (
+//           <p className="mt-4 text-xs leading-5 text-emerald-700">
+//             Check your inbox for the password recovery email.
+//           </p>
+//         )}
+//       </div>
+
+//     </motion.div>
+//   );
+// };
+
+// /* --------------------------------------------------
+//    LOGIN FORM
+// -------------------------------------------------- */
+
+// const LoginContainer = ({ whichPage, setWhichPage }) => {
+//   const [password, setPassword] = useState("");
+//   const [mail, setMail] = useState("");
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [rememberMe, setRememberMe] = useState(true);
+//   const [loading, setLoading] = useState(false);
+//   const [forgotpassShow, setForgotpassshow] = useState(false);
+
+//   const handleSuccess = async (credentialResponse) => {
+//     try {
+//       const res = await fetch(
+//         `${import.meta.env.VITE_BACKEND_API_URL}/login/google-login`,
+//         {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           credentials: "include",
+//           body: JSON.stringify({
+//             token: credentialResponse.access_token,
+//           }),
+//         }
+//       );
+
+//       const data = await res.json();
+
+//       if (data.code == "0") {
+//         toast.success("Login successful!");
+
+//         setTimeout(() => {
+//           window.location.href = "/";
+//         }, 1000);
+//       } else if (data.code == "1") {
+//         toast.error("This email is not registered.");
+//       } else {
+//         toast.error(data.msg || "Google login failed.");
+//       }
+//     } catch (error) {
+//       console.error("Google login error:", error);
+//       toast.error("Unable to connect. Please try again.");
+//     }
+//   };
+
+//   const login = useGoogleLogin({
+//     onSuccess: handleSuccess,
+//     onError: () => toast.error("Google login failed."),
+//   });
+
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+
+//     if (!mail.trim() || !password) {
+//       toast("Please fill in all fields.", {
+//         icon: <BrushCleaning size={17} />,
+//       });
+//       return;
+//     }
+
+//     try {
+//       setLoading(true);
+
+//       const code = await MakeLogin(mail.trim(), password);
+
+//       if (code === 1) {
+//         toast.error("User not found.");
+//       } else if (code === 2) {
+//         toast("Incorrect password.", {
+//           icon: <Info size={17} />,
+//         });
+//       } else if (code === 0) {
+//         toast.success("Welcome back!");
+
+//         setTimeout(() => {
+//           window.location.href = "/";
+//         }, 700);
+//       } else {
+//         toast.error("Something went wrong. Please try again.");
+//       }
+//     } catch (error) {
+//       console.error("Login error:", error);
+//       toast.error("Unable to sign in. Please try again.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div
+//       className={`relative w-full overflow-hidden bg-[#fafaff] p-7 sm:p-10 transition-all duration-500 ${
+//         whichPage === "signup" ? "-translate-y-full" : "translate-y-0"
+//       }`}
+//     >
+//       <AnimatePresence mode="wait">
+//         {forgotpassShow ? (
+//           <ForgotPassword
+//             key="forgot-password"
+//             setForgotpassshow={setForgotpassshow}
+//           />
+//         ) : (
+//           <motion.div
+//             key="login-form"
+//             initial={{ opacity: 0, x: -16 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             exit={{ opacity: 0, x: -16 }}
+//             transition={pageTransition}
+//             className="mx-auto flex w-full max-w-sm flex-col"
+//           >
+
+
+
+//             <div className="mb-8">
+
+//               <h1 className="text-[2rem] font-semibold tracking-tight text-slate-900">
+//                 Welcome back.
+//               </h1>
+
+//             </div>
+
+//             {/* Google */}
+
+//             <button
+//               type="button"
+//               onClick={() => login()}
+//               className="flex h-12 w-full items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-700 transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 active:scale-[0.99]"
+//             >
+//               <img
+//                 src="/google.png"
+//                 alt="Google"
+//                 className="h-[18px] w-[18px] object-contain"
+//               />
+
+//               Continue with Google
+//             </button>
+
+//             {/* Divider */}
+
+//             <div className="my-7 flex items-center gap-4">
+//               <div className="h-px flex-1 bg-slate-200" />
+
+//               <span className="whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.12em] text-slate-400">
+//                 Or use email
+//               </span>
+
+//               <div className="h-px flex-1 bg-slate-200" />
+//             </div>
+
+//             {/* Login form */}
+
+//             <form onSubmit={handleLogin}>
+//               <div className="mb-5">
+//                 <label
+//                   htmlFor="login-email"
+//                   className="mb-2 block text-xs font-medium text-slate-600"
+//                 >
+//                   Email address
+//                 </label>
+
+//                 <div className="relative">
+//                   <Mail
+//                     size={17}
+//                     className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+//                   />
+
+//                   <input
+//                     id="login-email"
+//                     type="email"
+//                     placeholder="you@example.com"
+//                     value={mail}
+//                     onChange={(e) => setMail(e.target.value)}
+//                     autoComplete="email"
+//                     required
+//                     className="auth-input pl-11"
+//                   />
+//                 </div>
+//               </div>
+
+//               <div>
+//                 <div className="mb-2 flex items-center justify-between">
+//                   <label
+//                     htmlFor="login-password"
+//                     className="text-xs font-medium text-slate-600"
+//                   >
+//                     Password
+//                   </label>
+
+//                   <button
+//                     type="button"
+//                     onClick={() => setForgotpassshow(true)}
+//                     className="text-xs font-medium text-indigo-600 transition-colors hover:text-indigo-800"
+//                   >
+//                     Forgot password?
+//                   </button>
+//                 </div>
+
+//                 <div className="relative">
+//                   <LockKeyhole
+//                     size={17}
+//                     className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+//                   />
+
+//                   <input
+//                     id="login-password"
+//                     type={showPassword ? "text" : "password"}
+//                     placeholder="Enter your password"
+//                     value={password}
+//                     onChange={(e) => setPassword(e.target.value)}
+//                     autoComplete="current-password"
+//                     required
+//                     className="auth-input pl-11 pr-12"
+//                   />
+
+//                   <button
+//                     type="button"
+//                     onClick={() => setShowPassword((prev) => !prev)}
+//                     aria-label={
+//                       showPassword ? "Hide password" : "Show password"
+//                     }
+//                     className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-700"
+//                   >
+//                     {showPassword ? (
+//                       <EyeOff size={17} />
+//                     ) : (
+//                       <Eye size={17} />
+//                     )}
+//                   </button>
+//                 </div>
+//               </div>
+
+//               {/* Remember me */}
+
+//               <label className="mt-6 flex w-fit cursor-pointer items-center gap-2.5 text-xs text-slate-500">
+//                 <input
+//                   type="checkbox"
+//                   checked={rememberMe}
+//                   onChange={(e) => setRememberMe(e.target.checked)}
+//                   className="h-3.5 w-3.5 accent-indigo-600"
+//                 />
+
+//                 Remember me
+//               </label>
+
+//               {/* Submit */}
+
+//               <button
+//                 type="submit"
+//                 disabled={loading}
+//                 className="auth-primary mt-7"
+//               >
+//                 {loading ? "Signing in..." : "Sign in"}
+
+//                 {!loading && <ArrowRight size={17} />}
+//               </button>
+//             </form>
+
+//             {/* Signup */}
+
+//             <div className="mt-8 border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
+//               Don't have an account?
+
+//               <button
+//                 type="button"
+//                 onClick={() => setWhichPage("signup")}
+//                 className="ml-1.5 font-semibold text-indigo-600 transition-colors hover:text-indigo-800"
+//               >
+//                 Create one
+//               </button>
+//             </div>
+
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+//     </div>
+//   );
+// };
+
+// /* --------------------------------------------------
+//    MAIN SIGN IN PAGE
+// -------------------------------------------------- */
+
+// const SignIn = () => {
+//   const [whichPage, setWhichPage] = useState("login");
+
+//   return (
+//     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#f3f4f8] px-4 py-10 text-slate-900 sm:px-8">
+
+//       {/* Subtle background details */}
+
+//       <div className="pointer-events-none absolute left-0 top-0 h-[420px] w-[420px] rounded-full bg-indigo-100/30 blur-[100px]" />
+
+//       <div className="pointer-events-none absolute bottom-0 right-0 h-[360px] w-[360px] rounded-full bg-violet-100/30 blur-[100px]" />
+
+//       {/* Main panel */}
+
+//       <motion.section
+//         layout
+//         transition={pageTransition}
+//         className={`relative z-10 w-full overflow-hidden rounded-2xl border border-white/80 bg-[#fafaff] shadow-[0_20px_80px_-35px_rgba(30,41,90,0.18)] ${
+//           whichPage === "login" ? "max-w-[460px]" : "max-w-5xl"
+//         }`}
+//       >
+//         <LoginContainer
+//           whichPage={whichPage}
+//           setWhichPage={setWhichPage}
+//         />
+
+//         <PatientSignup
+//           whichPage={whichPage}
+//           setWhichPage={setWhichPage}
+//         />
+//       </motion.section>
+
+//       <Toaster
+//         position="top-right"
+//         reverseOrder={true}
+//         toastOptions={{
+//           duration: 3000,
+//           style: {
+//             border: "1px solid #e2e8f0",
+//             borderRadius: "10px",
+//             background: "#fff",
+//             color: "#334155",
+//             fontSize: "13px",
+//             boxShadow: "0 8px 30px rgba(15, 23, 42, 0.07)",
+//           },
+//         }}
+//       />
+//     </main>
+//   );
+// };
+
+// export default SignIn;
 
 
 

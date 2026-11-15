@@ -1,4 +1,70 @@
 
+/* Editorial heading */
+
+.auth-editorial-heading {
+  color: #171923;
+  font-size: clamp(76px, 9vw, 126px);
+  font-weight: 650;
+  line-height: 0.95;
+  letter-spacing: -0.095em;
+}
+
+/* Underline input */
+
+.auth-line-input {
+  width: 100%;
+  height: 43px;
+
+  border: none;
+  border-bottom: 1px solid #dfe1e9;
+  border-radius: 0;
+
+  outline: none;
+  background: transparent;
+
+  color: #171923;
+  font-size: 13px;
+  font-weight: 450;
+
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.auth-line-input::placeholder {
+  color: #b0b4c0;
+}
+
+.auth-line-input:hover {
+  border-bottom-color: #a5a8b7;
+}
+
+.auth-line-input:focus {
+  border-bottom-color: #4f46e5;
+  box-shadow: 0 1px 0 #4f46e5;
+}
+
+.auth-line-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mobile typography */
+
+@media (max-width: 767px) {
+  .auth-editorial-heading {
+    font-size: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-line-input {
+    transition: none;
+  }
+}
+
+
+/* 
 .auth-input {
   width: 100%;
   height: 46px;
@@ -72,7 +138,7 @@
   .auth-primary {
     transition: none;
   }
-}
+} */
 
 
 
