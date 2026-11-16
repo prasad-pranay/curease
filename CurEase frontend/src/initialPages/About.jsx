@@ -64,15 +64,15 @@ function SectionHeading({
         {eyebrow}
       </p>
 
-      <h2 className="text-3xl font-semibold tracking-[-0.055em] text-slate-900 sm:text-4xl md:text-5xl">
+      <h2 className="text-3xl font-light tracking-[-0.055em] text-slate-900 sm:text-4xl md:text-5xl">
         {title}
       </h2>
 
-      {description && (
+      {/* {description && (
         <p className="mt-5 max-w-xl text-sm leading-7 text-slate-500 sm:text-base">
           {description}
         </p>
-      )}
+      )} */}
     </Reveal>
   );
 }
@@ -96,7 +96,7 @@ function Header() {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 borderb border-slate-200/70 bg-[#fafbfc]/90 backdrop-blur-xl">
+    <header className="stick fixed w-full top-0 z-50 borderb border-slate-200/70 bg[#fafbfc]/90 backdrop-blur-xl">
       <nav className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-6 md:px-10 lg:px-16">
         <button
           onClick={() => navigate("/")}
@@ -112,7 +112,7 @@ function Header() {
             <a
               key={link.href}
               href={link.href}
-              className="group relative py-2 text-[13px] font-medium text-slate-500 transition-colors hover:text-slate-950"
+              className="group relative py-2 text-[13px] font-light text-slate-500 transition-colors hover:text-slate-950"
             >
               {link.label}
               <span className="absolute bottom-0 left-0 h-px w-0 bg-blue-600 transition-all duration-300 group-hover:w-full" />
@@ -194,7 +194,7 @@ function Hero() {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden border-b border-slate-200/70"
+      className="relative overflow-hidden border-b border-slate-200/70 pt-15"
     >
       <div className="mx-auto grid min-h-[610px] max-w-7xl items-center gap-12 px-6 py-24 md:px-10 lg:grid-cols-[1fr_0.65fr] lg:px-16">
         <div>
@@ -206,17 +206,19 @@ function Hero() {
           </Reveal>
 
           <Reveal delay={0.08}>
-            <h1 className="max-w-3xl text-5xl font-semibold leading-[1.08] tracking-[-0.065em] text-slate-900 sm:text-6xl lg:text-[76px]">
-              How CurEase
+            <h1 className="max-w-3xl text-5xl font-light leading-[1.08] tracking-[-0.065em] text-slate-900 sm:text-6xl lg:text-[76px]">
+              How{" "}
+              <span className="text-slate-400">CurEase </span>
               <br />
-              <span className="text-slate-400">comes together.</span>
+              <span className="text-slate-400">comes </span>
+              <span className="text-blue-600">together.</span>
             </h1>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <p className="mt-8 max-w-lg text-base leading-8 text-slate-500">
-              A closer look at the technologies, libraries and architecture
-              behind CurEase — from the interface to the systems powering it.
+            <p className="mt-8 max-w-lg text-sm font-light leading-8 text-slate-500">
+              Technologies, libraries and architecture
+              used behind this project — from the interface to the systems powering it.
             </p>
           </Reveal>
 
@@ -224,7 +226,7 @@ function Hero() {
             <div className="mt-9 flex flex-wrap items-center gap-6">
               <a
                 href="#tech"
-                className="group flex items-center gap-3 rounded-md bg-blue-600 px-6 py-3.5 text-sm font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/15"
+                className="group flex items-center gap-3 rounded-xs bg-blue-600 px-6 py-3.5 text-sm font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/15"
               >
                 Explore the stack
                 <ArrowDown
@@ -251,14 +253,14 @@ function Hero() {
           <div className="relative mx-auto max-w-[390px]">
             <div className="absolute -inset-10 rounded-full bg-blue-100/60 blur-3xl" />
 
-            <div className="relative border border-slate-200 bg-white p-7 shadow-[0_20px_80px_-45px_rgba(30,64,120,0.25)]">
+            <div className="relative rounded border1 border-slate-200 bg-white/50 p-7 shadow-[0_20px_80px_-45px_rgba(30,64,120,0.25)]">
               <div className="flex items-center justify-between border-b border-slate-100 pb-5">
                 <span className="text-sm font-semibold tracking-tight text-slate-800">
-                  CurEase / System
+                  CurEase <span className="text-blue-600 font-light ml-1">- System</span>
                 </span>
                 <span className="flex items-center gap-2 text-xs text-slate-400">
                   <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-                  Architecture
+                  {/* Architecture */}
                 </span>
               </div>
 
@@ -269,9 +271,9 @@ function Hero() {
                   { icon: Brain, name: "AI processing", detail: "Python + Flask" },
                   { icon: Database, name: "Data", detail: "MongoDB" },
                 ].map((item, index) => (
-                  <div key={item.name}>
+                  <div key={item.name} className="group">
                     <div className="flex items-center gap-4">
-                      <div className="flex h-10 w-10 items-center justify-center bg-blue-50 text-blue-600">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full group-hover:bg-blue-50 text-blue-600">
                         <item.icon size={18} strokeWidth={1.7} />
                       </div>
 
@@ -296,9 +298,9 @@ function Hero() {
                 ))}
               </div>
 
-              <div className="border-t border-slate-100 pt-4 text-xs text-slate-400">
+              {/* <div className="border-t border-slate-100 pt-4 text-xs text-slate-400">
                 A simplified view of the system
-              </div>
+              </div> */}
             </div>
           </div>
         </Reveal>
@@ -491,7 +493,7 @@ const libraryTabs = [
     number: "04",
     description: "Tools used for scroll behaviour and animation.",
     details: [
-      ["Locomotive Scroll", "Scroll behaviour and interaction."],
+      ["Lenis Scroll", "Scroll behaviour and interaction."],
       ["ScrollTrigger", "Scroll-based animation triggers."],
     ],
   },
@@ -548,11 +550,11 @@ function LibrariesUsed() {
                   {activeLibrary.number} / {activeLibrary.name}
                 </p>
 
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">
+                <h3 className="mt-3 text-2xl font-light tracking-tight text-slate-900">
                   {activeLibrary.name} ecosystem
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-slate-500">
+                <p className="mt-3 text-sm font-light leading-7 text-slate-500">
                   {activeLibrary.description}
                 </p>
               </div>
@@ -572,7 +574,7 @@ function LibrariesUsed() {
                       </h4>
                     </div>
 
-                    <p className="pl-8 text-sm text-slate-500 sm:pl-0">
+                    <p className="pl-8 text-sm font-light text-slate-500 sm:pl-0">
                       {description}
                     </p>
                   </div>
@@ -623,17 +625,17 @@ const diagramLayers = [
 
 function ArchitectureDiagram() {
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="w-full">
       <div className="space-y-0">
         {diagramLayers.map((layer, index) => (
           <Reveal key={layer.name} delay={index * 0.08}>
-            <div className="relative mx-auto max-w-2xl">
+            <div className="relative px-10">
               <div className="group flex items-center gap-5 border-b border-slate-200 py-7 transition-colors hover:bg-blue-50/30 sm:gap-8">
                 <span className="w-8 shrink-0 text-xs tabular-nums text-slate-300">
                   0{index + 1}
                 </span>
 
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center group-hover:bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
                   <layer.icon size={20} strokeWidth={1.6} />
                 </div>
 
@@ -663,9 +665,9 @@ function ArchitectureDiagram() {
         ))}
       </div>
 
-      <p className="mt-7 text-xs leading-6 text-slate-400">
+      {/* <p className="mt-7 text-xs leading-6 text-slate-400">
         Simplified representation of the application's main technology layers.
-      </p>
+      </p> */}
     </div>
   );
 }
@@ -676,25 +678,24 @@ const detailedArchitecture = [
     icon: Smartphone,
     items: [
       ["Web", "React • Tailwind • Framer Motion"],
-      ["Mobile", "React Native / Flutter (optional)"],
-      ["Admin / Dashboard", "React + ShadCN UI / Tailwind"],
+      ["Admin - Dashboard", "React + ShadCN UI / Tailwind"],
     ],
   },
   {
     title: "Edge / API",
     icon: Globe,
     items: [
-      ["API Gateway", "Reverse proxy, rate limiting and TLS termination"],
-      ["Possible tools", "Nginx / Cloud Load Balancer / Cloudflare"],
+      ["API Gateway", "Rate limiting"],
+      ["Deployment", "Vercel"],
     ],
   },
   {
     title: "Application",
     icon: Server,
     items: [
-      ["Backend API", "Node.js • Express • REST / GraphQL"],
+      ["Backend API", "Node.js • Express • REST API"],
       ["Authentication", "JWT • bcrypt • OAuth"],
-      ["Realtime / Notifications", "WebSockets / Socket.IO • Push"],
+      ["Realtime / Notifications", "Firebase Cloud Messaging"],
     ],
   },
   {
@@ -702,26 +703,26 @@ const detailedArchitecture = [
     icon: Brain,
     items: [
       ["ML Service", "Python • Flask / FastAPI"],
-      ["Model Ops", "Dockerized models • optional GPU instances • monitoring"],
+      ["Models", "eslamxm/vit-base-food101, KNN Model"],
     ],
   },
   {
     title: "Data & Storage",
     icon: Database,
     items: [
-      ["Primary DB", "MongoDB / Atlas"],
-      ["File Storage", "Firebase Storage / S3"],
-      ["Auth / Identity", "Firebase Auth / Custom JWT"],
+      ["Primary DB", "MongoDB - Atlas"],
+      ["File Storage", "Firebase Storage / System"],
+      ["Auth / Identity", "JWT - Mongo"],
     ],
   },
   {
     title: "Infrastructure & DevOps",
     icon: Workflow,
     items: [
-      ["Deployment", "Docker • Kubernetes / Cloud Run"],
-      ["CI / CD", "GitHub Actions • Tests • Auto-deploy"],
-      ["Monitoring", "Prometheus / Grafana • Sentry • Logging"],
-      ["Security", "Encryption • Regular audits"],
+      ["Deployment", "Vercel"],
+      ["CI / CD", "GitHub Actions • Auto-deploy"],
+      ["Monitoring", "Vercel"],
+      ["Security", "Encryption"],
     ],
   },
 ];
@@ -782,7 +783,7 @@ function Architecture() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative pb-4 text-sm font-medium transition-colors ${
+              className={`relative pb-4 text-sm font-light transition-colors ${
                 activeTab === tab.id
                   ? "text-blue-700"
                   : "text-slate-400 hover:text-slate-800"
@@ -844,7 +845,7 @@ function DeveloperSection() {
           </div>
 
           <p className="mt-5 text-xs tracking-wide text-slate-400">
-            THE PERSON BEHIND CUREASE
+            HELLO
           </p>
         </Reveal>
 
@@ -858,10 +859,8 @@ function DeveloperSection() {
               Pranay Prasad<span className="text-blue-600">.</span>
             </h2>
 
-            <p className="mt-6 max-w-xl text-base leading-8 text-slate-500">
-              Building future-ready applications with modern web technologies.
-              CurEase brings together frontend engineering, backend systems
-              and AI-powered functionality into one healthcare-focused project.
+            <p className="mt-6 max-w-xl text-sm font-light leading-8 text-slate-500">
+              I'm Pranay Prasad, a curious and passionate individual who enjoys exploring technology, solving problems
             </p>
           </Reveal>
 
@@ -918,7 +917,7 @@ function Footer() {
   return (
     <footer className="overflow-hidden bg-[#fafbfc]">
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-20 md:px-10 lg:px-16">
-        <div className="flex flex-col justify-between gap-10 border-b border-slate-200 pb-12 md:flex-row md:items-end">
+        <div className="flex flex-col justify-between gap-10 borderb border-slate-200 pb-12 md:flex-row md:items-end">
           <div>
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
               CurEase
@@ -941,10 +940,10 @@ function Footer() {
           </button>
         </div>
 
-        <div className="flex flex-col justify-between gap-4 pt-7 text-xs text-slate-400 sm:flex-row">
-          <p>© {new Date().getFullYear()} CurEase. All rights reserved.</p>
-          <p>Project overview / Technology & architecture</p>
-        </div>
+        {/* <div className="flex flex-col justify-between gap-4 pt-7 text-xs text-slate-400 sm:flex-row">
+          <p className="font-light">© {new Date().getFullYear()} CurEase. All rights reserved.</p>
+          <p className="font-light">Project overview</p>
+        </div> */}
       </div>
     </footer>
   );

@@ -180,7 +180,7 @@ export const make_login = async (req, res) => {
     const token = jwt.sign(
       { id: "adminid", type: "admin" },
       process.env.JWT_SECRET,
-      { expiresIn: "10s" } // session valid for 1 hour
+      { expiresIn: "1h" } // session valid for 1 hour
     );
     res.cookie("token", token, {
         httpOnly: true, // cannot be accessed via JavaScript

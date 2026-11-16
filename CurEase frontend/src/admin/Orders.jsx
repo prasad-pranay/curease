@@ -171,10 +171,11 @@ const Orders = () => {
   
   return (
     <motion.section
+    data-lenis-prevent
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
-      className="bg-white/80 dark:bg-indigo-800/10 p-10 pr-5 rounded-sm h-[70vh] w-6xl flex flex-col justify-center"
+      className="bg-blue-900/20 z-100 text-white/80 p-10 pr-5 rounded-sm h-[70vh] w-6xl flex flex-col justify-center"
     >
 
       <div className='rounded-tl-xs rounded-bl-xs pr-5 flex flex-col w-full overflow-y-auto patient-scrollbar justify-start gap-10'>

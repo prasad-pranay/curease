@@ -245,7 +245,6 @@ export default function BubbleMenu({
             )}
           </span>
         </div>
-
         <button
           type="button"
           className={[

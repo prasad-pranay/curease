@@ -174,7 +174,7 @@ const BrandPanel = () => {
             PATIENT PORTAL
           </span> */}
 
-          <h1 className="auth-editorial-heading">
+          <h1 onClick={()=>window.open("/","_self")} className="cursor-pointer auth-editorial-heading">
             Cur<span className="text-[#4f46e5]">Ease.</span>
           </h1>
 
@@ -361,11 +361,11 @@ const LoginContainer = ({ whichPage, setWhichPage }) => {
 
                     <input
                       id="login-email"
-                      type="email"
+                      type="text"
                       placeholder="you@example.com"
                       value={mail}
                       onChange={(e) => setMail(e.target.value)}
-                      autoComplete="email"
+                      autoComplete="off"
                       required
                       className="auth-line-input"
                     />

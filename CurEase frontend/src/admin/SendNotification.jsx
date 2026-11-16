@@ -720,8 +720,9 @@ const SendNotification = () => {
     }, [])
 
   return (
-    <motion.section initial={{opacity:0,scale:0}} animate={{opacity:1,scale:1}} exit={{opacity:0,scale:0}} className="bg-white/90 dark:bg-black/20 p-10 rounded-sm h-[70vh] w-6xl">
-      {/* tabs */}
+    <motion.section initial={{opacity:0,scale:0}} animate={{opacity:1,scale:1}} exit={{opacity:0,scale:0}} 
+    className="z-100 bg-blue-900/20 text-white/80 p-10 rounded-sm h-[70vh] w-6xl">
+      {/* tabs */} 
       <div className="flex gap-10 py-2 items-center px-10">
         <motion.button
           initial={{ opacity: 0, scale: 0 }}

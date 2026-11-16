@@ -1,4 +1,8 @@
+python-dotenv
+flask
+pandas
 scikit-learn
+flask-cors
 google-generativeai
 transformers
 pillow

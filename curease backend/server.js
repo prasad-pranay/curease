@@ -30,7 +30,7 @@ app.get("/",(req,res)=>{
 app.use("/doctor", DoctorRoutes);
 app.use("/patient", PatientRouter);
 app.use("/pharmacy", PharmacyRouter);   
-app.use("/login", LoginRouter);
+app.use("/login", LoginRouter); 
 app.use("/tools", ToolsRoutes);
 app.use("/notification", NotificationRoutes);
 app.use("/gemini", GeminiRoutes);

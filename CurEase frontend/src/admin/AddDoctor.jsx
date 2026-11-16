@@ -431,7 +431,7 @@ const AddDoctor = () => {
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
-      className="bg-white/80 dark:bg-blue-900/20 p-10 rounded-sm h-[70vh] w-6xl flex flex-col justify-center"
+      className="z-100 relative bg-blue-900/20 text-white/80 p-10 rounded-sm h-[70vh] w-6xl flex flex-col justify-center"
     >
       <div className="grid grid-cols-[auto_1fr] gap-x-10">
         <motion.label initial={{scale:0,opacity:0}} animate={{scale:1,opacity:1}} htmlFor="doctor-profile-image" className="row-span-4 relative group">

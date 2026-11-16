@@ -14,6 +14,7 @@
 /curease backend/foodAnalyze/*
 !/curease backend/foodAnalyze/.gitkeep
 
+/curease backend/.venv
 /curease backend/addcolRought.py
 /curease backend/roughTemporary.js
 /curease backend/.env

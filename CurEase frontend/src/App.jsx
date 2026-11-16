@@ -110,7 +110,6 @@ function App() {
   
   async function CheckLogin(waitTime){
       const loginValue = await getMyData(setMyData,setCartItem)
-      console.log("Login Value : ",loginValue)
       if(loginValue!=-2){
         setTimeout(() => {
           setLogin(loginValue)
@@ -121,7 +120,7 @@ function App() {
 
   useEffect(() => {
     
-    CheckLogin(2500)
+    CheckLogin(1500)
     
     getWeatherData()
     ToggleDarkMode(false)

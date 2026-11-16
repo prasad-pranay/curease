@@ -26,7 +26,7 @@ const Doctor = ({id,name,image,temp}) => {
     <main className='doctor grid grid-cols-[auto_1fr] h-screen w-screen relative bg-[var(--bg)]'>
         <Sidebar whichTab={whichTab} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
         <Toaster position="top-right" reverseOrder={true} />
-        <main className='flex flex-col  max-w-screen overflow-hidden'>
+        <main data-lenis-prevent className='flex flex-col max-w-screen h-full overflow-hidden'>
             <Header whichTab={whichTab} image={image} setShowChat={setShowChat} />
             <Outlet />
         </main>

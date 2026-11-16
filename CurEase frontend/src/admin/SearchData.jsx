@@ -80,7 +80,7 @@ const SearchData = () => {
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
-      className="bg-white/80 dark:bg-blue-800/20 p-10 rounded-sm h-[70vh] w-6xl flex flex-col justify-center"
+      className="bg-blue-900/20 z-100 text-white/80 p-10 rounded-sm h-[70vh] w-6xl flex flex-col justify-center"
     >
         {/* top tab bar */}
         <div className='flex w-full gap-10'>

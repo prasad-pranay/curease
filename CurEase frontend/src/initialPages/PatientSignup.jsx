@@ -974,7 +974,7 @@ const PatientSignup = ({ whichPage, setWhichPage }) => {
         sm:w-[110px]
         lg:w-[150px]
       ">
-        <h1 className="auth-editorial-heading -rotate-90">
+        <h1 onClick={()=>window.open("/","_self")} className="cursor-pointer auth-editorial-heading -rotate-90">
             Cur<span className="text-[#4f46e5]">Ease.</span>
           </h1>
       </aside>

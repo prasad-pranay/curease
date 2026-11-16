@@ -1,23 +1,30 @@
-# 🌿 CurEase — Smart Healthcare, Simplified
+<div>
+<img src=".sample/icon.png" height=100 /><h1>Curease</h1>
+</div>
+<!-- <h3>Smart Healthcare, Simplified</h3> -->
+<img src=".sample/1.png"/>
 
-**CurEase** is an AI-powered **health-tech platform** focused on making healthcare more **accessible, personalized, and intelligent**.  
-It combines **modern web & mobile technologies** with **machine learning** to help users understand symptoms, analyze nutrition, manage medical records, and connect with healthcare professionals — all in one place.
+<!-- --- -->
+<details open>
+  <summary><strong>Table of Contents</strong></summary>
+  <ol> 
+    <li><a href="#getting-started">About</a></li>
+    <li><a href="#core-features">Core Features</a></li>
+    <li><a href="#tech-stack">Tech Stack</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#future-enhancements">Future Enhancements</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#screenshots">Screenshots</a></li>
+  </ol>
+</details>
 
-CurEase is built with a vision to **reduce dependency on manual healthcare processes** and empower users with **data-driven health insights**.
+## About
+CurEase is a healthcare-focused platform designed to simplify patient management and make healthcare services more accessible through technology. It brings together patient information, healthcare workflows, intelligent analysis, and digital tools in a unified application.
 
----
+The platform aims to provide a smoother experience for both patients and healthcare professionals through an intuitive interface and integrated backend services.
 
-## ✨ Key Highlights
 
-- 🧠 AI-Driven Health Insights  
-- 📊 Personalized User Dashboard  
-- 📱 Mobile-First, Responsive Design  
-- 🔐 Privacy-Focused Architecture  
-- 🚀 Scalable & Modular Tech Stack  
-
----
-
-## 🌟 Core Features
+## Core Features
 
 ### 🩺 Symptom-Based Disease Detection
 - Input symptoms and get AI-predicted probable conditions  
@@ -39,26 +46,25 @@ CurEase is built with a vision to **reduce dependency on manual healthcare proce
 - Health summaries & reminders
 - Smart recommendations
 
-### 📱 Responsive & Modern UI
-- Optimized for mobile, tablet, and desktop
+### 🔠 Image-to-Text Processing
+- Upload your prescription
+- Order them each seperately
 
----
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technologies |
 |------|-------------|
-| Frontend | React.js, Tailwind CSS, Chakra UI |
-| Backend | Node.js, Express.js |
-| Database | MongoDB, Firebase |
-| Machine Learning | Python, Scikit-learn, TensorFlow |
-| APIs | REST APIs, Health & Nutrition APIs |
-| Authentication | Firebase Auth |
-| Deployment | Vercel, Render / Heroku |
+| 🖥️ Frontend | React.js, Tailwind CSS, Framer Motion|
+| 🧑‍💻 Backend | Node.js, Express.js, Flask |
+| 💿 Database | MongoDB, Firebase |
+| 🤖 Machine Learning | Python, Scikit-learn, TensorFlow |
+| 📞 APIs | REST APIs, Health & Nutrition APIs |
+| 🔐 Authentication | OAuth / JWT |
+| 🌐 Deployment | Vercel |
 
----
 
-## ⚙️ How It Works
+<!-- ## WorkFlow
 
 1. User authentication via email or Google  
 2. Dashboard overview of health data  
@@ -66,44 +72,51 @@ CurEase is built with a vision to **reduce dependency on manual healthcare proce
 4. Food image nutrition analysis  
 5. Medical report storage & tracking  
 6. Doctor appointment & chat system  
-7. Smart reminders & notifications  
+7. Smart reminders & notifications   -->
 
----
+<!-- --- -->
 
-## 🚀 Getting Started
+## Getting Started
 
-### Prerequisites
-- Node.js ≥ 16
-- npm / yarn
-- MongoDB or Firebase
-- Python ≥ 3.8
+### 🚀 Prerequisites
+Make sure you have the following installed:
+- Node.js (LTS recommended)
+- npm
+- Python 3.11+
+- MongoDB / MongoDB Atlas (Cloud Hosted Free)
+- Git
 
-### Clone the Repository
+### ©️ Clone the Repository
 ```bash
 git clone https://github.com/prasad-pranay/curease.git
-cd CurEase
+cd curease
 ```
 
-### Backend Setup
-```bash
+### 🖥️ Frontend Setup
+Refer to [Curease Frontend Setup](CurEase%20frontend/README.md)
+
+### 🧑‍💻 Backend Setup
+Refer to [Curease Backend Setup](curease%20backend/README.md)
+<!-- ```bash
 cd backend
 npm install
 cp .env.example .env
 npm run dev
-```
+``` -->
 
-### Frontend Setup
+<!-- ### Frontend Setup
 ```bash
 cd frontend
 npm install
 npm start
-```
+``` 
 
 Open: http://localhost:3000
+-->
 
----
+<!-- --- -->
 
-## 📡 API Overview
+<!-- ## 📡 API Overview
 
 | Endpoint | Method | Description |
 |--------|--------|-------------|
@@ -113,71 +126,70 @@ Open: http://localhost:3000
 | /food/analyze | POST | Analyze food image |
 | /reports/upload | POST | Upload report |
 | /reports/:id | GET | Get report |
-| /appointments | GET / POST | Manage appointments |
+| /appointments | GET / POST | Manage appointments | -->
 
----
+<!-- --- -->
 
-## 🗺️ Roadmap
+<!-- ## 🗺️ Roadmap
 
 - Symptom-based disease detection  
 - Nutrition analysis from images  
 - Medical report tracking  
 - Doctor–patient chat  
 - Push notifications  
-- Wearable device integration  
+- Wearable device integration   -->
 
----
+<!-- --- -->
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
-- Video consultations
-- Health trend analytics
-- Multi-language support
-- Insurance system integration
-- Advanced AI predictions
+- 📽️ Video consultations
+- 🧑‍⚕️ Health trend analytics
+- 🗣️ Multi-language support
+- ❤️‍🩹 Insurance system integration
+- ⛑️ Advanced AI predictions
 
----
+<!-- --- -->
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 CurEase/
-├── frontend/
-├── backend/
-├── ml-models/
-├── README.md
-└── package.json
+├── frontend/     # frontend folder
+├── backend/      # backend folder
+├── sample/       # files for github readme
+├── .gitignore    # files to ignore for github
+└── README.md     # This current file
 ```
 
----
+<!-- --- -->
 
-## 🔐 Security & Privacy
 
-- Secure Firebase authentication
-- Encrypted data storage
-- Restricted report & image access
-- GDPR & HIPAA considerations
+<!-- ## 📬 Contact -->
+## Contact
 
----
+- 😺 GitHub: https://github.com/prasad-pranay  
+- 📧 Email: prasadpranay2005@gmail.com
+- 🫠 Portfolio: https://pranay-resume.vercel.app
+- ⚽ Instagram: [pranayy.c3](https://www.instagram.com/pranayy.c3/)
 
-## 🤝 Contributing
+## Screenshots
+|Landing Page| Login Page|
+|---|---|
+|<img src=".sample/1.png" />|<img src=".sample/2.png" />|
 
-Contributions are welcome!
+|Signin Page| Patient Page|
+|---|---|
+|<img src=".sample/3.png" />|<img src=".sample/4.png" />|
 
-1. Fork the repo  
-2. Create a feature branch  
-3. Commit your changes  
-4. Push & open a pull request  
+|Pharmacy Page| Checkout Page|
+|---|---|
+|<img src=".sample/5.png" />|<img src=".sample/6.png" />|
 
----
+|Utilities Page| Doctor Page|
+|---|---|
+|<img src=".sample/8.png" />|<img src=".sample/10.png" />|
 
-## 📄 License
 
-© 2025 Pranay — All rights reserved.
 
----
 
-## 📬 Contact
-
-- GitHub: https://github.com/prasad-pranay  
-- Email: prasadpranay2005@gmail.com
